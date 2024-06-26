@@ -1,0 +1,25 @@
+image: osrf/ros:foxy-desktop
+
+before_script:
+  - apt update
+  - apt install -y python3-pip
+  - pip3 install -U pytest colcon-common-extensions
+
+build:
+  stage: build
+  script:
+    - colcon build --cmake-args -DCMAKE_BUILD_TYPE=Debug
+  artifacts:
+    paths:
+      - build/
+      - install/
+    expire_in: 10 mins
+
+test:
+  stage: test
+  script:
+  - colcon test --event-handlers console_cohesion+ --return-code-on-test-failure --packages-select humanoid_tf
+  artifacts:
+    reports:
+      junit:
+      - build/humanoid_tf/test_results/humanoid_tf/*.xunit.xml

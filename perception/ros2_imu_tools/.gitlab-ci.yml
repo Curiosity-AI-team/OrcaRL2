@@ -1,0 +1,20 @@
+image: osrf/ros:humble-desktop
+ 
+build:
+  stage: build
+  script:
+    - colcon build --cmake-args -DCMAKE_BUILD_TYPE=Debug
+  artifacts:
+    paths:
+      - build/
+      - install/
+    expire_in: 10 mins
+
+test:
+  stage: test
+  script:
+  - colcon test --event-handlers console_cohesion+ --return-code-on-test-failure
+  artifacts:
+    reports:
+      junit:
+      - build/imu_fusion_madgwick/test_results/imu_fusion_madgwick/*.xunit.xml

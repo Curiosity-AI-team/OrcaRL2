@@ -1,0 +1,30 @@
+image: osrf/ros:foxy-desktop
+
+before_script:
+  - apt update
+  - apt install python3-pip -y
+  - pip3 install -U pytest colcon-common-extensions
+  
+build:
+  stage: build
+  script:
+    - colcon build --cmake-args -DCMAKE_BUILD_TYPE=Debug
+  artifacts:
+    paths:
+      - build/
+      - install/
+    expire_in: 10 mins
+
+test:
+  stage: test
+  script:
+  - colcon test --event-handlers console_cohesion+ --return-code-on-test-failure
+  artifacts:
+    reports:
+      junit:
+      - build/button_publisher/test_results/button_publisher/*.xunit.xml
+      - build/cm730_bringup/test_results/cm730_bringup/*.xunit.xml
+      - build/cm730driver/test_results/cm730driver/*.xunit.xml
+      - build/cm730controller/test_results/cm730controller/*.xunit.xml
+      - build/imu_publisher/test_results/imu_publisher/*.xunit.xml
+      - build/mx_joint_controller/test_results/mx_joint_controller/*.xunit.xml

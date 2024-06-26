@@ -1,0 +1,24 @@
+image: osrf/ros:foxy-desktop
+
+variables:
+  GIT_SUBMODULE_STRATEGY: recursive
+  
+before_script:
+  - apt update
+  - apt install python3-pip -y
+  - pip3 install -U pytest colcon-common-extensions
+  
+build:
+  stage: build
+  script:
+    - mkdir -p /workspace/src
+    - cp -r $(pwd) /workspace/src/ros2_ik_walk
+    - cd /workspace
+    - mkdir $CI_PROJECT_DIR/build && ln -s $CI_PROJECT_DIR/build .
+    - git clone https://gitlab.com/boldhearts/ros2_cm730.git src/ros2_cm730
+    - colcon build --packages-up-to ik_walk --cmake-args -DCMAKE_BUILD_TYPE=Debug
+    - colcon test --event-handlers console_cohesion+ --return-code-on-test-failure --packages-select ik_walk
+  artifacts:
+    reports:
+      junit:
+      - build/ik_walk/test_results/ik_walk/*.xunit.xml  
