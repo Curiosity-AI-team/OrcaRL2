@@ -9,7 +9,7 @@ def generate_launch_description():
         DeclareLaunchArgument('image', default_value='image'),
         DeclareLaunchArgument('transport', default_value='compressed'),
         DeclareLaunchArgument('fiducial_len', default_value='0.14'),
-        DeclareLaunchArgument('dictionary', default_value='7'),
+        DeclareLaunchArgument('dictionary', default_value='2'),
         DeclareLaunchArgument('do_pose_estimation', default_value='True'),
         DeclareLaunchArgument('vis_msgs', default_value="False"),
         DeclareLaunchArgument('ignore_fiducials', default_value=""),

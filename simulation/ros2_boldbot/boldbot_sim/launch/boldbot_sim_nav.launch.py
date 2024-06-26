@@ -18,13 +18,15 @@ def generate_launch_description():
 
     urdf_prefix = get_package_share_directory("boldbot_description")
     # urdf_file = os.path.join(urdf_prefix, "urdf", "boldbot.urdf")
-    urdf_file = "/home/vboxuser/orca_robot/colcon_ws/src/OrcaRL2/simulation/ros2_boldbot/boldbot_description/urdf/boldbot.urdf"
+    urdf_file = "/home/vboxuser/orca_robot/colcon_ws/src/OrcaRL2/simulation/ros2_boldbot/boldbot_description/urdf/boldbot_nav.urdf"
 
     if not os.path.exists(urdf_file):
         raise FileNotFoundError(f"URDF file not found: {urdf_file}")
 
-    world_prefix = get_package_share_directory("boldbot_sim")
-    world_file = os.path.join(world_prefix, "worlds", "rchl_kid_2019.world")
+    # world_prefix = get_package_share_directory("boldbot_sim")
+    # world_file = os.path.join(world_prefix, "worlds", "rchl_kid_2019.world")
+    world_prefix = get_package_share_directory("tuw_gazebo")
+    world_file = os.path.join(world_prefix, "worlds", "aruco.world")
 
     return LaunchDescription(
         [
