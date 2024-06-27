@@ -673,7 +673,7 @@ FiducialsNode::FiducialsNode()
 
     dictionary = aruco::getPredefinedDictionary(dicno);
 
-    img_sub = img_trans->subscribe("/camera/image", 1,
+    img_sub = img_trans->subscribe("/camera/image_raw", 1,
                            &FiducialsNode::imageCallback, this);
 
     vertices_sub = nh->create_subscription<fiducial_msgs::msg::FiducialArray>("fiducial_vertices", 1,

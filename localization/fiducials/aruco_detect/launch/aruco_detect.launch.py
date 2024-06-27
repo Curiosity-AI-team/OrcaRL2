@@ -6,7 +6,7 @@ from launch.substitutions import LaunchConfiguration
 def generate_launch_description():
     return LaunchDescription([
         DeclareLaunchArgument('camera', default_value='camera'),
-        DeclareLaunchArgument('image', default_value='image'),
+        DeclareLaunchArgument('image_raw', default_value='image_raw'),
         DeclareLaunchArgument('transport', default_value='compressed'),
         DeclareLaunchArgument('fiducial_len', default_value='0.14'),
         DeclareLaunchArgument('dictionary', default_value='2'),
@@ -31,7 +31,7 @@ def generate_launch_description():
             ],
             #Not sure if the remapping is working properly TODO
             remappings=[
-                ('camera/compressed', [LaunchConfiguration('camera'), '/',LaunchConfiguration('image'), '/', LaunchConfiguration('transport')]),
+                ('camera/image', [LaunchConfiguration('camera'), '/image_raw']),
                 ('camera_info', [LaunchConfiguration('camera'), '/camera_info']),
             ]
         )

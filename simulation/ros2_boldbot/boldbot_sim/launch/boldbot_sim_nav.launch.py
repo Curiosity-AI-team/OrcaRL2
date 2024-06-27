@@ -1,5 +1,5 @@
 import os
-
+import sys
 from ament_index_python.packages import get_package_share_directory
 from launch import LaunchDescription
 from launch.actions import ExecuteProcess
@@ -10,6 +10,7 @@ from scripts import GazeboRosPaths
 def generate_launch_description():
     model_path, plugin_path, media_path = GazeboRosPaths.get_paths()
 
+    model_path = "/usr/share/gazebo-11/models:/home/vboxuser/orca_robot/colcon_ws/src/OrcaRL2/simulation/ros2_boldbot/boldbot_sim/models:/home/vboxuser/orca_robot/colcon_ws/install/boldbot_sim/share/boldbot_sim/..:/home/vboxuser/orca_robot/colcon_ws/install/boldbot_description/share/boldbot_description/.."
     env = {
         "GAZEBO_MODEL_PATH": model_path,
         "GAZEBO_PLUGIN_PATH": plugin_path,
@@ -23,10 +24,10 @@ def generate_launch_description():
     if not os.path.exists(urdf_file):
         raise FileNotFoundError(f"URDF file not found: {urdf_file}")
 
-    # world_prefix = get_package_share_directory("boldbot_sim")
-    # world_file = os.path.join(world_prefix, "worlds", "rchl_kid_2019.world")
-    world_prefix = get_package_share_directory("tuw_gazebo")
-    world_file = os.path.join(world_prefix, "worlds", "aruco.world")
+    world_prefix = get_package_share_directory("boldbot_sim")
+    world_file = os.path.join(world_prefix, "worlds", "navigation.world")
+    # world_prefix = get_package_share_directory("tuw_gazebo")
+    # world_file = os.path.join(world_prefix, "worlds", "aruco.world")
 
     return LaunchDescription(
         [
