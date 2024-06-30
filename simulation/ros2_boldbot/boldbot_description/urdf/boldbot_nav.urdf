@@ -168,10 +168,10 @@
   </gazebo>
   <joint name="head-gaze" type="fixed">
     <parent link="head"/>
-    <child link="gaze"/>
+    <child link="camera"/>
     <origin rpy="0 0 0" xyz="0 0 0"/>
   </joint>
-  <link name="gaze">
+  <link name="camera">
   </link>
   <!-- Arms -->
   <joint name="torso-mx28-shoulder-pitch-l" type="fixed">

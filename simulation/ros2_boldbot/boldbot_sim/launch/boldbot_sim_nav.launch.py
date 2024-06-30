@@ -67,5 +67,11 @@ def generate_launch_description():
                 output="screen",
                 arguments=[urdf_file],
             ),
+            Node(
+                package='tf2_ros',
+                executable='static_transform_publisher',
+                arguments=['0', '0', '0', '0', '0', '0', 'odom', 'base_footprint'],
+                parameters=[{'use_sim_time': True}]
+            ),
         ]
     )
