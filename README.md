@@ -12,7 +12,7 @@ ros2 topic echo /aruco_detect/fiducial_transforms
 
 ros2 run tf2_tools view_frames.py
 
-ros2 run tf2_ros static_transform_publisher 0 0 0 0 0 0 base_footprint base_link
-
 
 ros2 launch orca_rtabmap orca_rtabmap.launch.py use_sim_time:=true qos:=2
+
+ros2 launch orca_rtabmap orca_rtabmap_slam.launch.py use_sim_time:=true qos:=2
