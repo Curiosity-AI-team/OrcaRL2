@@ -22,8 +22,6 @@ def generate_launch_description():
     rtabmap_parameters={
           'subscribe_rgbd':True,
           'subscribe_scan':False,
-        #   'tag_detections':'/detections',
-          'fiducial_transforms':'/fiducial_transforms',
           'use_action_for_goal':True,
           'odom_sensor_sync': True,
           'qos_scan':qos,
@@ -97,10 +95,10 @@ def generate_launch_description():
             arguments=['--ros-args', '--log-level', 'WARN']
             ),
 
-        # Node(
-        #     package='rtabmap_viz', executable='rtabmap_viz', output='screen',
-        #     parameters=[rtabmap_parameters, shared_parameters],
-        #     remappings=remappings,
-        #     arguments=['--ros-args', '--log-level', 'WARN']
-        #     ),
+        Node(
+            package='rtabmap_viz', executable='rtabmap_viz', output='screen',
+            parameters=[rtabmap_parameters, shared_parameters],
+            remappings=remappings,
+            arguments=['--ros-args', '--log-level', 'WARN']
+            ),
     ])
