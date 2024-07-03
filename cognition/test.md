@@ -1,23 +1,24 @@
-1) subscribe to odom transform gps data target data time 6 reserved data picture data and ip/network address to put to database 
+```bash
+1) subscribe to odom convert data gps target data time 6 reserved data image data and ip/network address to put into database 
 
 
-2) Create an AI that can understand human text input and provide the output from this list:
-read the text input and database input and command library input. base of that create the decision that do the specific task
-Body Parts Actions
-*tf mean coordinate transformations required
-Verbs that specifically relate to actions performed by different parts of the body.
+2) Create an artificial intelligence that can understand human text and produce results from this list:
+read text input and database input and command library input. based on this, create a solution that will perform a specific task
+Body part actions
+*tf denote the necessary coordinate transformations
+Verbs that refer to actions performed by different body parts.
 
-    Head: Think, nod, shake, turn (head), look, stare, blink, scratch (head)
-    Eyes: Blink, squint, wink, see, gaze, focus, close(tf), open(tf)
-    Hands: Hold(tf), touch(tf), grab(tf), squeeze(tf), wave, clap, shake(tf), point(tf)
-    Arms: Raise(tf), lower(tf), stretch, swing, cross, rest
-    Legs: Stand, sit, kneel, jump, run(tf), walk(tf), kick(tf)
-    Body: Bend, twist, stretch, lean, stand, sit, lie down, fall
-    Face: Smile, frown, blush, blush, grimace, laugh, cry, sneeze
+    Head: think, nod, shake, turn (head), stare, stare, blink, scratch (head)
+    Eyes: blink, squint, wink, see, stare, focus, close (tf), open (tf)
+    Hands: Hold (tf), touch (tf), grasp (tf), squeeze (tf), wave, clap, shake (tf), point (tf)
+    Arms: Raise (tf), lower (tf), stretch, swing, cross, rest.
+    Legs: Standing, sitting, kneeling, jumping, running, walking, kicking.
+    Torso: Bend, twist, stretch, bend, stand, sit, lie down, fall over
+    Face: Smile, frown, blush, redden, blush, grimace, laugh, cry, sneeze
 
-3) Create a ros node that receive python output and publish to the ros topic
+3) Create a ros node that will receive python output and publish it to the ros topic.
 
-In navigation task:
+In the navigation task:
 
-4) Subscribe to the command topic and do the specific the execution
-
+4) Subscribe to the commands topic and run a specific command
+```
