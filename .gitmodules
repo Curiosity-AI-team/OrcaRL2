@@ -7,3 +7,9 @@
 [submodule "localization/rtabmap"]
 	path = localization/rtabmap
 	url = https://github.com/introlab/rtabmap.git
+[submodule "perception/yolov8_ros"]
+	path = perception/yolov8_ros
+	url = https://github.com/mgonzs13/yolov8_ros
+[submodule "perception/depthai-ros"]
+	path = perception/depthai-ros
+	url = https://github.com/luxonis/depthai-ros
