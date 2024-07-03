@@ -1,0 +1,59 @@
+head:
+  - think
+  - nod
+  - shake
+  - turn
+  - look
+  - stare
+  - blink
+  - scratch
+eyes:
+  - blink
+  - squint
+  - wink
+  - see
+  - gaze
+  - focus
+  - close
+  - open
+hands:
+  - hold
+  - touch
+  - grab
+  - squeeze
+  - wave
+  - clap
+  - shake
+  - point
+arms:
+  - raise
+  - lower
+  - stretch
+  - swing
+  - cross
+  - rest
+legs:
+  - stand
+  - sit
+  - kneel
+  - jump
+  - run
+  - walk
+  - kick
+body:
+  - bend
+  - twist
+  - stretch
+  - lean
+  - stand
+  - sit
+  - lie down
+  - fall
+face:
+  - smile
+  - frown
+  - blush
+  - grimace
+  - laugh
+  - cry
+  - sneeze
