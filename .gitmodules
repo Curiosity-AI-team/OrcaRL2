@@ -1,0 +1,9 @@
+[submodule "localization/velodyne"]
+	path = localization/velodyne
+	url = https://github.com/ros-drivers/velodyne
+[submodule "localization/rtabmap_ros"]
+	path = localization/rtabmap_ros
+	url = https://github.com/introlab/rtabmap_ros
+[submodule "localization/rtabmap"]
+	path = localization/rtabmap
+	url = https://github.com/introlab/rtabmap.git

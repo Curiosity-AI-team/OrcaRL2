@@ -97,10 +97,10 @@ def generate_launch_description():
             arguments=['--ros-args', '--log-level', 'WARN']
             ),
 
-        # Node(
-        #     package='rtabmap_viz', executable='rtabmap_viz', output='screen',
-        #     parameters=[rtabmap_parameters, shared_parameters],
-        #     remappings=remappings,
-        #     arguments=['--ros-args', '--log-level', 'WARN']
-        #     ),
+        Node(
+            package='rtabmap_viz', executable='rtabmap_viz', output='screen',
+            parameters=[rtabmap_parameters, shared_parameters],
+            remappings=remappings,
+            arguments=['--ros-args', '--log-level', 'WARN']
+            ),
     ])
