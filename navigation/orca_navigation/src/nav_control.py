@@ -1,75 +1,100 @@
 import rclpy
 from rclpy.node import Node
-import time
-import os
-import json
-import sys
-import numpy as np
-import math
-from std_msgs.msg import Float64
-from sensor_msgs.msg import JointState
 from geometry_msgs.msg import PoseStamped
-END_COORDINATE = "tf_end"
+from std_srvs.srv import SetBool  # This will be replaced with our custom service
+from example_interfaces.srv import AddTwoInts  # Placeholder for custom service import
 
 class TaskGenerator(Node):
     def __init__(self, robot_name, mode, *argv):
         super().__init__('task_generator_node')
-        
-        # ROS2 does not use rospkg directly, assuming package path is known or managed differently
-        self.package_path = '/path/to/moveit_python'  # Update this path as necessary
+        self.service = self.create_service(AddTwoInts, 'get_instruction', self.handle_get_instruction)
 
-        if mode not in ["check_json_files", "delete_json_sim_content", "delete_json_temp"]:
-            self.bot = None
-            if robot_name == "robot":
-                robot_name = self.bot.get_group_names()[0]
-                robot_name = robot_name.replace("_arm", "")
-            elif not self.bot.get_group_names()[0] == f"{robot_name}_arm":
-                print(f"Wrong robot name: {robot_name}")
-                sys.exit()
+    def handle_get_instruction(self, request, response):
+        try:
+            self.get_instruction(request.mode, request.pose)
+            response.result = True
+        except Exception as e:
+            self.get_logger().error(f'Failed to execute mode {request.mode}: {str(e)}')
+            response.result = False
+        return response
 
-        print(f"task_generator_node: | robot:{robot_name} | mode:{mode} |")
-        self.arguments = sys.argv
-        self.robot = robot_name
-        self.home_dir = os.path.expanduser('~')
-        self.mode = mode
-        self.task_executer = True  # Set to False to disable execution to manipulator
-        self.slow_move = True  # Set to False to run at max speed
-        self.joint_data1 = {}
-        self.joint_data2 = {}
-        self.joint_data3 = {}
-        self.name = None
-        self.position = None
-        self.rate = self.create_rate(10)  # Hz
+    def get_instruction(self, mode, tf_target):
+        move_actions = {
+            "move_head": self.move_head,
 
-        mode_actions = {
-            "get_robot_param": self.get_robot_param,
-            "joints_position": self.joints_position,
-            "end_coordinate": self.end_coordinate,
-            "spawn_object": self.spawn_object,
-            "attach_object": self.attach_object,
-            "detach_object": self.detach_object,
-            "remove_object": self.remove_object,
-            "gripper_open": self.gripper_open,
-            "gripper_close": self.gripper_close,
-            "choose_pipeline": self.choose_pipeline,
-            "choose_follow_mode": self.choose_follow_mode,
-            "clear_scene": self.clear_scene,
-            "check_json_files": self.check_json_files,
-            "delete_json_sim_content": self.delete_json_sim_content,
-            "delete_json_temp": self.delete_json_temp,
+            "arm_random": self.arm_random,
+            "arm_touch": self.arm_touch,
+            "arm_grasp": self.arm_grasp,
+            "arm_put": self.arm_put,
+            "arm_point": self.arm_point,
+            "arm_move": self.arm_move,
+            "arm_rest": self.arm_rest,
+
+            "body_sit": self.body_sit,
+            "body_run": self.body_run,
+            "body_walk": self.body_walk,
+            "body_crawl": self.body_crawl,
+            "body_stand": self.body_stand,
+            "body_lie_down": self.body_lie_down,
+            "body_fall_over": self.body_fall_over,
+
+            "leg_jump": self.leg_jump,
+            "leg_kick": self.leg_kick,
         }
-
-        action = mode_actions.get(mode)
+        action = move_actions.get(mode)
         if action:
-            action()
+            action(tf_target)
         else:
-            print("Mode name error")
-            print("Available modes:", list(mode_actions.keys()))
-            sys.exit()
+            self.get_logger().error("Mode name error")
+            self.get_logger().error("Available moves: " + ", ".join(list(move_actions.keys())))
+            return False
+        return True
+
+
+    def move_head(self):
+        pass
+
+    def arm_random(self):
+        pass
+    def arm_touch(self):
+        pass
+    def arm_grasp(self):
+        pass
+    def arm_put(self):
+        pass
+    def arm_point(self):
+        pass
+    def arm_move(self):
+        pass
+    def arm_rest(self):
+        pass
+
+
+    def body_sit(self):
+        pass
+    def body_run(self):
+        pass
+    def body_walk(self):
+        pass
+    def body_crawl(self):
+        pass
+    def body_stand(self):
+        pass
+    def body_lie_down(self):
+        pass
+    def body_fall_over(self):
+        pass
+
+
+    def leg_jump(self):
+        pass
+    def leg_kick(self):
+        pass
+
 
 def main(args=None):
     rclpy.init(args=args)
-    task_generator = TaskGenerator('robot', 'get_robot_param')  # Example usage
+    task_generator = TaskGenerator('robot', 'get_robot_param')
     rclpy.spin(task_generator)
     task_generator.destroy_node()
     rclpy.shutdown()

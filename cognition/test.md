@@ -8,13 +8,11 @@ Body part actions
 *tf denote the necessary coordinate transformations
 Verbs that refer to actions performed by different body parts.
 
-    Head: think, nod, shake, turn (head), stare, stare, blink, scratch (head)
-    Eyes: blink, squint, wink, see, stare, focus, close (tf), open (tf)
-    Hands: Hold (tf), touch (tf), grasp (tf), squeeze (tf), wave, clap, shake (tf), point (tf)
-    Arms: Raise (tf), lower (tf), stretch, swing, cross, rest.
-    Legs: Standing, sitting, kneeling, jumping, running, walking, kicking.
-    Torso: Bend, twist, stretch, bend, stand, sit, lie down, fall over
-    Face: Smile, frown, blush, redden, blush, grimace, laugh, cry, sneeze
+    Head: nod_head, shake_head, turn_head (tf), stare_head, scratch_head
+    Hands: hand_push (tf), hand_touch (tf), hand_grasp (tf), hand_squeeze (tf), hand_wave, hand_clap, hand_shake (tf), hand_point (tf)
+    Arms: arm_raise (tf), arm_lower (tf), arm_stretch, arm_swing, arm_cross, arm_rest.
+    Legs: leg_stand, leg_sit, leg_kneel, leg_jump, leg_run, leg_walk, leg_kick.
+    Torso: torso_bend, torso_twist, torso_stretch, torso_stand, torso_lie_down, torso_fall_over
 
 3) Create a ros node that will receive python output and publish it to the ros topic.
 
