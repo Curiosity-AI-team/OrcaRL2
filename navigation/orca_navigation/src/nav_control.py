@@ -3,12 +3,12 @@ import rclpy
 from rclpy.node import Node
 from geometry_msgs.msg import PoseStamped
 from std_srvs.srv import SetBool  # This will be replaced with our custom service
-from example_interfaces.srv import AddTwoInts  # Placeholder for custom service import
+from orca_navigation.srv import ModePoseStamped  # Placeholder for custom service import
 
 class TaskGenerator(Node):
     def __init__(self, robot_name, mode, *argv):
         super().__init__('task_generator_node')
-        self.service = self.create_service(AddTwoInts, 'get_instruction', self.handle_get_instruction)
+        self.service = self.create_service(ModePoseStamped, 'get_instruction', self.handle_get_instruction)
 
     def handle_get_instruction(self, request, response):
         try:

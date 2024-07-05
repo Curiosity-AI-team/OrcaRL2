@@ -3,7 +3,8 @@ logs/
 build/
 
 *~
-
+yolov8m-pose.pt
+yolov8m.pt
 # Emacs
 .#*
 

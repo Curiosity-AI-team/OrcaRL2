@@ -1265,13 +1265,12 @@
   <gazebo>
     <plugin filename="libgazebo_ros_planar_move.so" name="object_controller">
       <ros>
-        <!-- <argument>cmd_vel:=custom_cmd_vel</argument> -->
         <argument>odom:=odom_cmd</argument>
       </ros>
       <publish_odom>true</publish_odom>
-      <publish_odom_tf>false</publish_odom_tf>
+      <publish_odom_tf>true</publish_odom_tf>
 
-      <odometry_frame>odom_demo</odometry_frame>
+      <odometry_frame>odom_cmd</odometry_frame>
       <robot_base_frame>base_link</robot_base_frame>
 
       <covariance_x>0.0001</covariance_x>

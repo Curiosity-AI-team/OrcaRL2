@@ -5,7 +5,11 @@ from launch import LaunchDescription
 from launch.actions import ExecuteProcess
 from launch_ros.actions import Node
 from scripts import GazeboRosPaths
-
+from launch.actions import IncludeLaunchDescription
+from launch.launch_description_sources import PythonLaunchDescriptionSource
+from launch.launch_description_sources import PythonLaunchDescriptionSource
+from launch.substitutions import PathJoinSubstitution, LaunchConfiguration
+from launch_ros.substitutions import FindPackageShare
 
 def generate_launch_description():
     model_path, plugin_path, media_path = GazeboRosPaths.get_paths()
@@ -67,11 +71,28 @@ def generate_launch_description():
                 output="screen",
                 arguments=[urdf_file],
             ),
+            # Node(
+            #     package='tf2_ros',
+            #     executable='static_transform_publisher',
+            #     arguments=['0', '0', '0', '0', '0', '0', 'odom', 'base_footprint'],
+            #     parameters=[{'use_sim_time': True}]
+            # ),
             Node(
-                package='tf2_ros',
-                executable='static_transform_publisher',
-                arguments=['0', '0', '0', '0', '0', '0', 'odom', 'base_footprint'],
-                parameters=[{'use_sim_time': True}]
+                package='simulation',
+                executable='fake_gps.py',
+                name='fake_gps',
+                output='screen',
             ),
+            IncludeLaunchDescription(
+                PythonLaunchDescriptionSource(
+                    PathJoinSubstitution([FindPackageShare('aruco_detect'), 'launch', 'aruco_detect.launch.py'])
+                )),
+
+            # IncludeLaunchDescription(
+            #     PythonLaunchDescriptionSource(
+            #         PathJoinSubstitution([FindPackageShare('yolov8_bringup'), 'launch', 'yolov8_3d.launch.py'])
+            #     ),
+            #     launch_arguments={'model': 'yolov8m-pose.pt'}.items()
+            #     ),
         ]
     )
