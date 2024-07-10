@@ -1,4 +1,0 @@
-string mode
-geometry_msgs/PoseStamped pose
----
-bool result
