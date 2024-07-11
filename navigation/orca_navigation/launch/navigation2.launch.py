@@ -2,7 +2,6 @@ import os
 
 from ament_index_python.packages import get_package_share_directory
 from launch import LaunchDescription
-from launch.conditions import IfCondition
 from launch.actions import DeclareLaunchArgument
 from launch.actions import IncludeLaunchDescription
 from launch.launch_description_sources import PythonLaunchDescriptionSource
@@ -13,7 +12,6 @@ TURTLEBOT3_MODEL = os.environ['TURTLEBOT3_MODEL']
 
 
 def generate_launch_description():
-    use_rviz = LaunchConfiguration('use_rviz', default='true')
     use_sim_time = LaunchConfiguration('use_sim_time', default='false')
     map_dir = LaunchConfiguration(
         'map',
@@ -24,7 +22,7 @@ def generate_launch_description():
 
     param_file_name = TURTLEBOT3_MODEL + '.yaml'
     param_dir = LaunchConfiguration(
-        'params_file',
+        'params',
         default=os.path.join(
             get_package_share_directory('turtlebot3_navigation2'),
             'param',
@@ -44,7 +42,7 @@ def generate_launch_description():
             description='Full path to map file to load'),
 
         DeclareLaunchArgument(
-            'params_file',
+            'params',
             default_value=param_dir,
             description='Full path to param file to load'),
 
@@ -58,15 +56,14 @@ def generate_launch_description():
             launch_arguments={
                 'map': map_dir,
                 'use_sim_time': use_sim_time,
-                'params_file': param_dir}.items(),
+                'params': param_dir}.items(),
         ),
 
         Node(
             package='rviz2',
-            executable='rviz2',
-            name='rviz2',
-            arguments=['-d', rviz_config_dir],
+            node_executable='rviz2',
+            node_name='rviz2',
+            arguments=['-d', "/home/vboxuser/orca_robot/colcon_ws/src/OrcaRL2/navigation/orca_navigation/rviz/nav.rviz"],
             parameters=[{'use_sim_time': use_sim_time}],
-            condition=IfCondition(use_rviz),
             output='screen'),
     ])
