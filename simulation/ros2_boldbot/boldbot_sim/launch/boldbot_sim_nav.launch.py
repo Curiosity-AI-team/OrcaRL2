@@ -77,12 +77,14 @@ def generate_launch_description():
             #     arguments=['0', '0', '0', '0', '0', '0', 'odom', 'base_footprint'],
             #     parameters=[{'use_sim_time': True}]
             # ),
-            Node(
-                package='simulation',
-                executable='fake_gps.py',
-                name='fake_gps',
-                output='screen',
-            ),
+
+            # ERROR: executable 'fake_gps.py' not found on the libexec directory '/home/vboxuser/orca_robot/colcon_ws/install/simulation/lib/simulation'
+            # Node(
+            #     package='simulation',
+            #     executable='fake_gps.py',
+            #     name='fake_gps',
+            #     output='screen',
+            # ),
             IncludeLaunchDescription(
                 PythonLaunchDescriptionSource(
                     PathJoinSubstitution([FindPackageShare('aruco_detect'), 'launch', 'aruco_detect.launch.py'])

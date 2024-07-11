@@ -10,6 +10,12 @@
   <buildtool_depend>ament_cmake</buildtool_depend>
 
   <depend>std_msgs</depend>
+  <depend>rmf_visualization_schedule</depend>
+  <depend>rmf_task_dispatcher</depend>
+  <depend>rmf_demos</depend>
+  <depend>rmf_demos_gz</depend>
+  <depend>rmf_fleet_adapter</depend>
+  <depend>rmf_demos_maps</depend>
 
   <test_depend>ament_lint_auto</test_depend>
   <test_depend>ament_lint_common</test_depend>
