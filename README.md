@@ -19,3 +19,4 @@ ros2 launch orca_rtabmap orca_rtabmap.launch.py use_sim_time:=true qos:=2
 ros2 launch orca_rtabmap orca_rtabmap_slam.launch.py use_sim_time:=true qos:=2
 
 ros2 launch orca_rtabmap orca_rtabmap_full.launch.py use_sim_time:=true qos:=2
+hello
