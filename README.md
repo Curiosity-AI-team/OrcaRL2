@@ -1,6 +1,6 @@
 # OrcaRL2
 
-d
+--
 ros2 launch boldbot_sim boldbot_sim_nav.launch.py
 
 ros2 launch aruco_detect aruco_detect.launch.py
