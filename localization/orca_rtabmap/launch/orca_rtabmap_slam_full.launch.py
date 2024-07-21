@@ -21,7 +21,9 @@ def generate_launch_description():
 
     rtabmap_parameters={
           'subscribe_rgbd':True,
-          'subscribe_scan':False,
+          'subscribe_scan':True,
+        #   'tag_detections':'/detections',
+        #   'fiducial_transforms':'/fiducial_transforms',
           'use_action_for_goal':True,
           'odom_sensor_sync': True,
           'qos_scan':qos,
@@ -42,6 +44,7 @@ def generate_launch_description():
 
     remappings=[
           ('imu', '/imu/data_raw'),
+          ('scan', '/points2'),
           ('rgb/image', '/camera_rgb/image_raw'),
           ('rgb/camera_info', '/camera_rgb/camera_info'),
           ('depth/image', '/camera_depth/depth/image_raw')]
