@@ -1,6 +1,6 @@
 from setuptools import setup
 
-package_name = 'fleet_adapter_template'
+package_name = 'orca_adapter'
 
 setup(
     name=package_name,
@@ -22,7 +22,7 @@ setup(
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
-            'fleet_adapter=fleet_adapter_template.fleet_adapter:main'
+            'fleet_adapter=orca_adapter.fleet_adapter:main'
         ],
     },
 )

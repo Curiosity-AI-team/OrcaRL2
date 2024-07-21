@@ -1,31 +1,4 @@
-# Copyright 2021 Open Source Robotics Foundation, Inc.
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#     http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-
-
-'''
-    The RobotAPI class is a wrapper for API calls to the robot. Here users
-    are expected to fill up the implementations of functions which will be used
-    by the RobotCommandHandle. For example, if your robot has a REST API, you
-    will need to make http request calls to the appropriate endpoints within
-    these functions.
-'''
-
-
 class RobotAPI:
-    # The constructor below accepts parameters typically required to submit
-    # http requests. Users should modify the constructor as per the
-    # requirements of their robot's API
     def __init__(self, prefix: str, user: str, password: str):
         self.prefix = prefix
         self.user = user

@@ -1,24 +1,14 @@
 import os
-
 from ament_index_python.packages import get_package_share_directory
-
-
 from launch import LaunchDescription
 from launch.actions import IncludeLaunchDescription, TimerAction
 from launch.launch_description_sources import PythonLaunchDescriptionSource
-from launch.substitutions import Command
+from launch.substitutions import Command, FindExecutable, LaunchConfiguration, PathJoinSubstitution
 from launch.actions import RegisterEventHandler
 from launch.event_handlers import OnProcessStart
-
 from launch_ros.actions import Node
 
-
-
 def generate_launch_description():
-
-
-    # Include the robot_state_publisher launch file, provided by our own package. Force sim time to be enabled
-    # !!! MAKE SURE YOU SET THE PACKAGE NAME CORRECTLY !!!
 
     package_name='orca_control' #<--- CHANGE ME
 
@@ -28,12 +18,19 @@ def generate_launch_description():
                 )]), launch_arguments={'use_sim_time': 'false', 'use_ros2_control': 'true'}.items()
     )
 
-    # joystick = IncludeLaunchDescription(
-    #             PythonLaunchDescriptionSource([os.path.join(
-    #                 get_package_share_directory(package_name),'launch','joystick.launch.py'
-    #             )])
-    # )
+    joystick = IncludeLaunchDescription(
+                PythonLaunchDescriptionSource([os.path.join(
+                    get_package_share_directory('joystick_control'),'launch','start.launch.py')
+                    ])
+    )
 
+    realsence_sensor = IncludeLaunchDescription(
+                PythonLaunchDescriptionSource([os.path.join(
+                    get_package_share_directory('orca_perception'),'launch','camera.launch.py')
+                    ])
+    )
+
+    lidar_sensor = Node(namespace='rslidar_sdk', package='rslidar_sdk', executable='rslidar_sdk_node', output='screen')
 
     twist_mux_params = os.path.join(get_package_share_directory(package_name),'config','twist_mux.yaml')
     twist_mux = Node(
@@ -42,26 +39,33 @@ def generate_launch_description():
             parameters=[twist_mux_params],
             remappings=[('/cmd_vel_out','/diff_cont/cmd_vel_unstamped')]
         )
-
     
+    robot_description_content = Command(
+        [
+            PathJoinSubstitution([FindExecutable(name="xacro")]),
+            " ",
+            PathJoinSubstitution(
+                [get_package_share_directory(package_name), "description", "robot.urdf.xacro"]
+            ),
+        ]
+    )
 
-
-    robot_description = Command(['ros2 param get --hide-type /robot_state_publisher robot_description'])
-
-    controller_params_file = os.path.join(get_package_share_directory(package_name),'config','my_controllers.yaml')
+    controller_params_file = os.path.join(get_package_share_directory(package_name),'config','driver_odrive.yaml')
 
     controller_manager = Node(
         package="controller_manager",
         executable="ros2_control_node",
-        parameters=[{'robot_description': robot_description},
+        parameters=[{'robot_description': robot_description_content},
                     controller_params_file]
     )
 
     delayed_controller_manager = TimerAction(period=3.0, actions=[controller_manager])
 
+    spawner_executable = FindExecutable(name="spawner")
+
     diff_drive_spawner = Node(
         package="controller_manager",
-        executable="spawner.py",
+        executable=spawner_executable,
         arguments=["diff_cont"],
     )
 
@@ -74,7 +78,7 @@ def generate_launch_description():
 
     joint_broad_spawner = Node(
         package="controller_manager",
-        executable="spawner.py",
+        executable=spawner_executable,
         arguments=["joint_broad"],
     )
 
@@ -85,31 +89,14 @@ def generate_launch_description():
         )
     )
 
-
-    # Code for delaying a node (I haven't tested how effective it is)
-    # 
-    # First add the below lines to imports
-    # from launch.actions import RegisterEventHandler
-    # from launch.event_handlers import OnProcessExit
-    #
-    # Then add the following below the current diff_drive_spawner
-    # delayed_diff_drive_spawner = RegisterEventHandler(
-    #     event_handler=OnProcessExit(
-    #         target_action=spawn_entity,
-    #         on_exit=[diff_drive_spawner],
-    #     )
-    # )
-    #
-    # Replace the diff_drive_spawner in the final return with delayed_diff_drive_spawner
-
-
-
     # Launch them all!
     return LaunchDescription([
         rsp,
-        # joystick,
+        joystick,
+        realsence_sensor,
+        lidar_sensor,
         twist_mux,
-        delayed_controller_manager,
-        delayed_diff_drive_spawner,
-        delayed_joint_broad_spawner
+        # delayed_controller_manager,
+        # delayed_diff_drive_spawner,
+        # delayed_joint_broad_spawner
     ])

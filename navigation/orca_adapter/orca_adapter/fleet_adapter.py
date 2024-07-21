@@ -37,11 +37,6 @@ from functools import partial
 from .RobotCommandHandle import RobotCommandHandle
 from .RobotClientAPI import RobotAPI
 
-# ------------------------------------------------------------------------------
-# Helper functions
-# ------------------------------------------------------------------------------
-
-
 def initialize_fleet(config_yaml, nav_graph_path, node, use_sim_time, server_uri):
     # Profile and traits
     fleet_config = config_yaml['rmf_fleet']

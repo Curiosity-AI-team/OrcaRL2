@@ -13,42 +13,27 @@ TURTLEBOT3_MODEL = os.environ['TURTLEBOT3_MODEL']
 
 def generate_launch_description():
     use_sim_time = LaunchConfiguration('use_sim_time', default='false')
-    map_dir = LaunchConfiguration(
-        'map',
+    map_dir = LaunchConfiguration('map',
         default=os.path.join(
-            get_package_share_directory('turtlebot3_navigation2'),
-            'map',
-            'map.yaml'))
+            get_package_share_directory('orca_navigation'), 'map', 'map.yaml'))
 
-    param_file_name = TURTLEBOT3_MODEL + '.yaml'
-    param_dir = LaunchConfiguration(
-        'params',
+    param_dir = LaunchConfiguration('params',
         default=os.path.join(
-            get_package_share_directory('turtlebot3_navigation2'),
-            'param',
-            param_file_name))
+            get_package_share_directory('orca_navigation'), 'config', 'orca_nano.yaml'))
 
     nav2_launch_file_dir = os.path.join(get_package_share_directory('nav2_bringup'), 'launch')
 
     rviz_config_dir = os.path.join(
-        get_package_share_directory('nav2_bringup'),
-        'rviz',
-        'nav2_default_view.rviz')
+        get_package_share_directory('nav2_bringup'), 'rviz', 'nav2_default_view.rviz')
 
     return LaunchDescription([
-        DeclareLaunchArgument(
-            'map',
-            default_value=map_dir,
+        DeclareLaunchArgument('map', default_value=map_dir,
             description='Full path to map file to load'),
 
-        DeclareLaunchArgument(
-            'params',
-            default_value=param_dir,
+        DeclareLaunchArgument('params', default_value=param_dir,
             description='Full path to param file to load'),
 
-        DeclareLaunchArgument(
-            'use_sim_time',
-            default_value='false',
+        DeclareLaunchArgument('use_sim_time', default_value='false',
             description='Use simulation (Gazebo) clock if true'),
 
         IncludeLaunchDescription(
