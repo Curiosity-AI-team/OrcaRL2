@@ -59,10 +59,10 @@ void BoldbotGazeboPlugin::Load(gazebo::physics::ModelPtr model, sdf::ElementPtr 
     joint_targets_[name] = 0.0;
   }
 
-  RCLCPP_DEBUG(ros_node_->get_logger(), "Got joints:");
-  for (auto const & j : joints_) {
-    RCLCPP_DEBUG(ros_node_->get_logger(), j.first);
-  }
+  // RCLCPP_DEBUG(ros_node_->get_logger(), "Got joints:");
+  // for (auto const & j : joints_) {
+  //   RCLCPP_DEBUG(ros_node_->get_logger(), j.first);
+  // }
 
   // Hook into simulation update loop
   update_connection_ = gazebo::event::Events::ConnectWorldUpdateBegin(

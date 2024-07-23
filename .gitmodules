@@ -13,9 +13,9 @@
 [submodule "perception/depthai-ros"]
 	path = perception/depthai-ros
 	url = https://github.com/luxonis/depthai-ros
-[submodule "action/serial"]
-	path = action/serial
-	url = https://github.com/cottsay/serial.git
-[submodule "action/diffdrive_arduino"]
-	path = action/diffdrive_arduino
-	url = https://github.com/joshnewans/diffdrive_arduino
+[submodule "navigation/aruco_ros"]
+	path = navigation/aruco_ros
+	url = https://github.com/pal-robotics/aruco_ros.git
+[submodule "simulation/rmf_demos"]
+	path = simulation/rmf_demos
+	url = https://github.com/open-rmf/rmf_demos.git
