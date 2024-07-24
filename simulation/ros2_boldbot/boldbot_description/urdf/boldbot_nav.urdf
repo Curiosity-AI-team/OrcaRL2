@@ -1207,7 +1207,7 @@
         <pose>0 0 0 0 0 0</pose>
         <camera name="camera_depth">
         </camera>
-	          <plugin name="camera_driver" filename="libgazebo_ros_camera.so">
+	          <plugin name="camera_driver1" filename="libgazebo_ros_camera.so">
             <camera_name>camera_depth</camera_name>
             <frame_name>camera_depth</frame_name>
             <hack_baseline>0.07</hack_baseline>
@@ -1238,7 +1238,7 @@
             <stddev>0.007</stddev>
           </noise>
         </camera>
-          <plugin name="camera_driver" filename="libgazebo_ros_camera.so">
+          <plugin name="camera_driver2" filename="libgazebo_ros_camera.so">
             <camera_name>camera_rgb</camera_name>
             <frame_name>camera_rgb</frame_name>
             <hack_baseline>0.07</hack_baseline>

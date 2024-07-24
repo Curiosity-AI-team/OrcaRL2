@@ -810,8 +810,10 @@
     <selfCollide>true</selfCollide>
     <kp>1000000.0</kp>
     <kd>100.0</kd>
-    <mu1 value="0.001"/>
-    <mu2 value="0.001"/>
+    <mu1 value="1"/>
+    <mu2 value="1"/>
+    <!-- <mu1 value="0.001"/>
+      <mu2 value="0.001"/> -->
     <maxVel>0.5</maxVel>
     <minDepth>0.002</minDepth>
   </gazebo>
@@ -1168,8 +1170,10 @@
     <selfCollide>true</selfCollide>
     <kp>1000000.0</kp>
     <kd>100.0</kd>
-    <mu1 value="0.001"/>
-    <mu2 value="0.001"/>
+    <mu1 value="1"/>
+    <mu2 value="1"/>
+    <!-- <mu1 value="0.001"/>
+      <mu2 value="0.001"/> -->
     <maxVel>0.5</maxVel>
     <minDepth>0.002</minDepth>
   </gazebo>
@@ -1187,7 +1191,6 @@
   </joint>
   <link name="r_toe">
     </link>
-
   <joint name="base_footprint_j" type="fixed">
     <parent link="base_footprint"/>
     <child link="base_link"/>
@@ -1199,51 +1202,50 @@
     <plugin filename="libboldbot_gazebo_plugin.so" name="boldbot_gazebo">
     </plugin>
   </gazebo>
-
   <gazebo reference="head">
-      <sensor name="camera_depth" type="depth">
-        <always_on>1</always_on>
-        <update_rate>1</update_rate>
-        <pose>0 0 0 0 0 0</pose>
-        <camera name="camera_depth">
+    <sensor name="camera_depth" type="depth">
+      <always_on>1</always_on>
+      <update_rate>1</update_rate>
+      <pose>0 0 0 0 0 0</pose>
+      <camera name="camera_depth">
         </camera>
-	          <plugin name="camera_driver" filename="libgazebo_ros_camera.so">
-            <camera_name>camera_depth</camera_name>
-            <frame_name>camera_depth</frame_name>
-            <hack_baseline>0.07</hack_baseline>
-            <min_depth>0.001</min_depth>
-          </plugin>
-      </sensor>
+      <plugin filename="libgazebo_ros_camera.so" name="camera_driver1">
+        <camera_name>camera_depth</camera_name>
+        <frame_name>camera_depth</frame_name>
+        <hack_baseline>0.07</hack_baseline>
+        <min_depth>0.001</min_depth>
+      </plugin>
+    </sensor>
   </gazebo>
   <gazebo reference="head">
-      <sensor name="camera_rgb" type="camera">
-        <always_on>true</always_on>
-        <visualize>true</visualize>
-        <update_rate>30</update_rate>
-	      <pose>0 0 0 0 0 0</pose>
-        <camera name="camera_rgb">
-          <horizontal_fov>1.02974</horizontal_fov>
-          <image>
-            <width>320</width>
-            <height>240</height>
-            <format>R8G8B8</format>
-          </image>
-          <clip>
-            <near>0.02</near>
-            <far>300</far>
-          </clip>
-          <noise>
-            <type>gaussian</type>
-            <mean>0.0</mean>
-            <stddev>0.007</stddev>
-          </noise>
-        </camera>
-          <plugin name="camera_driver" filename="libgazebo_ros_camera.so">
-            <camera_name>camera_rgb</camera_name>
-            <frame_name>camera_rgb</frame_name>
-            <hack_baseline>0.07</hack_baseline>
-          </plugin>
-      </sensor>
+    <sensor name="camera_rgb" type="camera">
+      <always_on>true</always_on>
+      <visualize>true</visualize>
+      <update_rate>30</update_rate>
+      <pose>0 0 0 0 0 0</pose>
+      <camera name="camera_rgb">
+        <horizontal_fov>1.02974</horizontal_fov>
+        <image>
+          <width>320</width>
+          <height>240</height>
+          <format>R8G8B8</format>
+        </image>
+        <clip>
+          <near>0.02</near>
+          <far>300</far>
+        </clip>
+        <noise>
+          <type>gaussian</type>
+          <mean>0.0</mean>
+          <stddev>0.007</stddev>
+        </noise>
+      </camera>
+      <plugin filename="libgazebo_ros_camera.so" name="camera_driver2">
+        <camera_name>camera_rgb</camera_name>
+        <frame_name>camera_rgb</frame_name>
+        <hack_baseline>0.07</hack_baseline>
+      </plugin>
+    </sensor>
   </gazebo>
   <gazebo reference="torso">
     <gravity>true</gravity>
@@ -1270,10 +1272,8 @@
       </ros>
       <publish_odom>true</publish_odom>
       <publish_odom_tf>false</publish_odom_tf>
-
       <odometry_frame>odom_demo</odometry_frame>
       <robot_base_frame>base_link</robot_base_frame>
-
       <covariance_x>0.0001</covariance_x>
       <covariance_y>0.0001</covariance_y>
       <covariance_yaw>0.01</covariance_yaw>
