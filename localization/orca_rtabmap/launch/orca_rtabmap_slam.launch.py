@@ -14,13 +14,12 @@ def generate_launch_description():
 
     icp_parameters={
           'odom_frame_id':'odom',
-          'guess_frame_id':'odom',
+          'guess_frame_id':'odom_cmd',
           'qos':qos,
           'wait_imu_to_init': True,
     }
 
     rtabmap_parameters={
-          'subscribe_rgbd':True,
           'subscribe_scan':False,
         #   'tag_detections':'/detections',
           'fiducial_transforms':'/fiducial_transforms',
@@ -35,17 +34,20 @@ def generate_launch_description():
 
     # Shared parameters between different nodes
     shared_parameters={
+          'subscribe_depth':False,
+          'subscribe_rgbd':True,
+          'visual_odometry':False,
           'frame_id':'base_footprint',
           'use_sim_time':use_sim_time,
-          'Reg/Strategy':'1',
+          'Reg/Strategy':'0',
           'Reg/Force3DoF':'true',
           'Mem/NotLinkedNodesKept':'false',
     }
 
     remappings=[
           ('imu', '/imu/data_raw'),
-          ('rgb/image', '/camera_rgb/image_raw'),
-          ('rgb/camera_info', '/camera_rgb/camera_info'),
+          ('rgb/image', '/camera_depth/image_raw'),
+          ('rgb/camera_info', '/camera_depth/camera_info'),
           ('depth/image', '/camera_depth/depth/image_raw')]
 
     return LaunchDescription([

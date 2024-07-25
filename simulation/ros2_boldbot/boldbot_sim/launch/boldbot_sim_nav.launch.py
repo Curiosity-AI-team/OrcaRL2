@@ -85,10 +85,10 @@ def generate_launch_description():
             #     name='fake_gps',
             #     output='screen',
             # ),
-            IncludeLaunchDescription(
-                PythonLaunchDescriptionSource(
-                    PathJoinSubstitution([FindPackageShare('aruco_detect'), 'launch', 'aruco_detect.launch.py'])
-                )),
+            # IncludeLaunchDescription(
+            #     PythonLaunchDescriptionSource(
+            #         PathJoinSubstitution([FindPackageShare('aruco_detect'), 'launch', 'aruco_detect.launch.py'])
+            #     )),
 
             # IncludeLaunchDescription(
             #     PythonLaunchDescriptionSource(

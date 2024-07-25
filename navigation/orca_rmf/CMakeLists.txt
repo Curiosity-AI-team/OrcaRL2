@@ -32,7 +32,6 @@ install(TARGETS orca_rmf
   DESTINATION lib/${PROJECT_NAME})
 
 install(DIRECTORY
-  example
   launch
   config
   rviz

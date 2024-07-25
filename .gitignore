@@ -1,7 +1,9 @@
 devel/
 logs/
 build/
-
+venv
+.rasa
+/cognition/rasa_app/models
 *~
 yolov8m-pose.pt
 yolov8m.pt
