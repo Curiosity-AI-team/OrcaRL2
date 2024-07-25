@@ -19,3 +19,6 @@
 [submodule "simulation/rmf_demos"]
 	path = simulation/rmf_demos
 	url = https://github.com/open-rmf/rmf_demos.git
+[submodule "navigation/free_fleet"]
+	path = navigation/free_fleet
+	url = https://github.com/open-rmf/free_fleet

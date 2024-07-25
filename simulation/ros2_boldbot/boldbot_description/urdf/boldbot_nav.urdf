@@ -168,10 +168,10 @@
   </gazebo>
   <joint name="head-gaze" type="fixed">
     <parent link="head"/>
-    <child link="camera_rgb"/>
+    <child link="camera_depth"/>
     <origin rpy="-1.57 0 -1.57" xyz="0 0 0"/>
   </joint>
-  <link name="camera_rgb">
+  <link name="camera_depth">
   </link>
   <!-- Arms -->
   <joint name="torso-mx28-shoulder-pitch-l" type="fixed">
@@ -1271,7 +1271,7 @@
       <publish_odom_tf>true</publish_odom_tf>
 
       <odometry_frame>odom_cmd</odometry_frame>
-      <robot_base_frame>base_link</robot_base_frame>
+      <robot_base_frame>base_footprint</robot_base_frame>
 
       <covariance_x>0.0001</covariance_x>
       <covariance_y>0.0001</covariance_y>

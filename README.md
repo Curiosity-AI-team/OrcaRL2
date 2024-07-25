@@ -13,10 +13,10 @@ ros2 run teleop_twist_keyboard teleop_twist_keyboard
 
 ros2 topic echo /aruco_detect/fiducial_transforms
 
-ros2 run tf2_tools view_frames.py
+ros2 run tf2_tools view_frames
 
 
-ros2 launch orca_rtabmap orca_rtabmap.launch.py use_sim_time:=true qos:=2
+ros2 launch orca_rtabmap orca_rtabmap.launch.py use_sim_time:=true qos:=2 
 
 ros2 launch orca_rtabmap orca_rtabmap_slam.launch.py use_sim_time:=true qos:=2
 
@@ -35,7 +35,7 @@ sudo apt-get install ros-foxy-ament-cmake
 
 colcon build --packages-select orca_navigation
 
-git submodule add https://github.com/pal-robotics/aruco_ros.git navigation/aruco_ros
+git submodule add https://github.com/open-rmf/free_fleet navigation/free_fleet
 git submodule add https://github.com/open-rmf/rmf_demos.git simulation/rmf_demos
 
 git submodule add https://github.com/ros-drivers/velodyne colcon_ws/src/OrcaRL2/localization/velodyne
@@ -43,8 +43,8 @@ git submodule add https://github.com/ros-drivers/velodyne colcon_ws/src/OrcaRL2/
 
 $ git config --global user.name "John Doe" $ git config --global user.email hejhe@gmail.com
 
-Set your username: git config --global user.name "FIRST_NAME LAST_NAME"
-Set your email address: git config --global user.email "MY_NAME@example.com"
+git config --global user.name "FIRST_NAME LAST_NAME"
+git config --global user.email "MY_NAME@example.com"
 
 killall -9 gzserver
 killall -9 gzclient
@@ -67,10 +67,6 @@ cp -r ./* ~/.gazebo/models/.
 
 export GAZEBO_MODEL_PATH=~/.gazebo/models:$GAZEBO_MODEL_PATH
 
-
-ros2 launch orca_navigation turtlebot3_world.launch.py
-ros2 launch orca_navigation cartographer.launch.py use_sim_time:=True
-ros2 launch orca_navigation navigation2.launch.py use_sim_time:=True
 
 ros2 launch simulation launch_sim.launch.py
 

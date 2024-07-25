@@ -15,7 +15,6 @@ find_package(vision_msgs REQUIRED)
 install(DIRECTORY
   launch
   config
-  example
   map
   DESTINATION share/${PROJECT_NAME}/
 )
