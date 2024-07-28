@@ -141,7 +141,7 @@
   <joint name="head-tilt-head" type="fixed">
     <parent link="mx28-head-tilt"/>
     <child link="head"/>
-    <origin rpy="1.5707963267948966 0 1.5707963267948966" xyz="0.065 0 0"/>
+    <origin rpy="1.5707963267948966 0 1.7707963267948966" xyz="0.065 0 0"/>
   </joint>
   <link name="head">
     <visual>
@@ -1206,13 +1206,20 @@
         <update_rate>1</update_rate>
         <pose>0 0 0 0 0 0</pose>
         <camera name="camera_depth">
+            <horizontal_fov>1.3962634</horizontal_fov> <!-- Field of view in radians -->
+            <image>
+                <width>320</width>
+                <height>240</height>
+                <!-- <format>R8G8B8</format> -->
+            </image>
         </camera>
-	          <plugin name="camera_driver1" filename="libgazebo_ros_camera.so">
+	      <plugin name="camera_driver1" filename="libgazebo_ros_camera.so">
             <camera_name>camera_depth</camera_name>
             <frame_name>camera_depth</frame_name>
             <hack_baseline>0.07</hack_baseline>
-            <min_depth>0.001</min_depth>
-          </plugin>
+            <min_depth>1.0</min_depth>
+            <max_depth>5.0</max_depth> 
+        </plugin>
       </sensor>
   </gazebo>
   <gazebo reference="head">

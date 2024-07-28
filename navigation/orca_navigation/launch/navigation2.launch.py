@@ -31,7 +31,7 @@ def generate_launch_description():
         DeclareLaunchArgument('params', default_value=param_dir,
             description='Full path to param file to load'),
 
-        DeclareLaunchArgument('use_sim_time', default_value='false',
+        DeclareLaunchArgument('use_sim_time', default_value='true',
             description='Use simulation (Gazebo) clock if true'),
 
         IncludeLaunchDescription(

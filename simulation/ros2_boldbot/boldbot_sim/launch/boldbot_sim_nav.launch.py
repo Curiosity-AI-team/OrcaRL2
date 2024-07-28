@@ -38,10 +38,9 @@ def generate_launch_description():
             ExecuteProcess(
                 cmd=[
                     "gazebo",
-                    "-s",
-                    "libgazebo_ros_init.so",
-                    "-s",
-                    "libgazebo_ros_factory.so",
+                    "--headless",
+                    "-s", "libgazebo_ros_init.so",
+                    "-s", "libgazebo_ros_factory.so",
                     world_file,
                 ],
                 output="screen",
@@ -51,16 +50,11 @@ def generate_launch_description():
                 package="gazebo_ros",
                 executable="spawn_entity.py",
                 arguments=[
-                    "-entity",
-                    "boldbot",
-                    "-x",
-                    "-1",
-                    "-y",
-                    "0",
-                    "-z",
-                    ".41",
-                    "-b",
-                    "-file",
+                    "-entity", "boldbot",
+                    "-x", "-1",
+                    "-y", "0",
+                    "-z", ".41",
+                    "-b", "-file",
                     urdf_file,
                 ],
                 output="screen",
@@ -71,6 +65,13 @@ def generate_launch_description():
                 output="screen",
                 arguments=[urdf_file],
             ),
+
+            Node(package="teleop_twist_keyboard", executable="teleop_twist_keyboard",
+                # remappings=[('/cmd_vel','/cmd_vel_joy')],
+                output='screen',
+                prefix = 'xterm -e',
+            )
+
             # Node(
             #     package='tf2_ros',
             #     executable='static_transform_publisher',
