@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.5)
-project(orca_rmf)
+project(orca_rmf_core)
 
 # Default to C99
 if(NOT CMAKE_C_STANDARD)
@@ -19,16 +19,16 @@ endif()
 find_package(ament_cmake REQUIRED)
 find_package(std_msgs REQUIRED)
 
-add_executable(orca_rmf src/orca_rmf.cpp)
-target_include_directories(orca_rmf PUBLIC
+add_executable(orca_rmf_core src/orca_rmf_core.cpp)
+target_include_directories(orca_rmf_core PUBLIC
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
   $<INSTALL_INTERFACE:include>)
 ament_target_dependencies(
-  orca_rmf
+  orca_rmf_core
   "std_msgs"
 )
 
-install(TARGETS orca_rmf
+install(TARGETS orca_rmf_core
   DESTINATION lib/${PROJECT_NAME})
 
 install(DIRECTORY

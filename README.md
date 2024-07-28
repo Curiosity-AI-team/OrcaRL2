@@ -13,7 +13,7 @@ ros2 run teleop_twist_keyboard teleop_twist_keyboard
 
 ros2 topic echo /aruco_detect/fiducial_transforms
 
-ros2 run tf2_tools view_frames
+
 
 
 ros2 launch orca_rtabmap orca_rtabmap.launch.py use_sim_time:=true qos:=2 
@@ -35,7 +35,7 @@ sudo apt-get install ros-foxy-ament-cmake
 
 colcon build --packages-select orca_navigation
 
-git submodule add https://github.com/open-rmf/free_fleet navigation/free_fleet
+git submodule add https://github.com/pal-robotics/aruco_ros.git localization/aruco_ros
 git submodule add https://github.com/open-rmf/rmf_demos.git simulation/rmf_demos
 
 git submodule add https://github.com/ros-drivers/velodyne colcon_ws/src/OrcaRL2/localization/velodyne
