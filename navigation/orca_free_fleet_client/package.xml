@@ -2,25 +2,15 @@
 <?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
 <package format="3">
   <name>orca_free_fleet_client</name>
-  <version>0.0.1</version>
-  <description>TODO</description>
-  <maintainer email="aaron@openrobotics.org">Aaron Chong</maintainer>
-  <maintainer email="elias@tractonomy.com">Elias De Coninck</maintainer>
-  <license>Apache-2.0</license>
+  <version>1.0.0</version>
+  <description>A package containing some examples of using free fleet ROS 2 components</description>
+  <maintainer email="aaron@openrobotics.org">Aaron</maintainer>
+  <license>Apache License 2.0</license>
 
-  <buildtool_depend>ament_cmake</buildtool_depend>
-
-  <depend>rclcpp</depend>
-  <depend>rclcpp_action</depend>
-  <depend>tf2_ros</depend>
-  <depend>nav2_util</depend>
-  <depend>geometry_msgs</depend>
-  <depend>tf2</depend>
-  <depend>nav2_msgs</depend>
-  <depend>std_srvs</depend>
-  <depend>sensor_msgs</depend>
-  <depend>rmf_fleet_msgs</depend>
-  <depend>free_fleet</depend>
+  <exec_depend>rclpy</exec_depend>
+  <exec_depend>rmf_fleet_msgs</exec_depend>
+  <exec_depend>free_fleet_client_ros2</exec_depend>
+  <exec_depend>free_fleet_server_ros2</exec_depend>
 
   <export>
     <build_type>ament_cmake</build_type>

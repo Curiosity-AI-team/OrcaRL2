@@ -3,27 +3,16 @@
 <package format="3">
   <name>orca_free_fleet_server</name>
   <version>1.0.0</version>
-  <description>Free Fleet server ROS 2 wrapper</description>
-  <maintainer email="mquigley@openrobotics.org">Morgan Quigley</maintainer>
-  <maintainer email="aaron@openrobotics.org">Aaron Chong</maintainer>
+  <description>A package containing some examples of using free fleet ROS 2 components</description>
+  <maintainer email="aaron@openrobotics.org">Aaron</maintainer>
   <license>Apache License 2.0</license>
-  <author email="morgan@openrobotics.org">Morgan Quigley</author>
-  <author email="aaron@openrobotics.org">Aaron Chong</author>
 
-  <buildtool_depend>ament_cmake</buildtool_depend>
-  <buildtool_depend>rosidl_default_generators</buildtool_depend>
-  <build_depend>builtin_interfaces</build_depend>
-  
-  <depend>rclcpp</depend>
-  <depend>rmf_fleet_msgs</depend>
-  <depend>free_fleet</depend>
-  
-  <test_depend>ament_lint_common</test_depend>
-
-  <member_of_group>rosidl_interface_packages</member_of_group>
+  <exec_depend>rclpy</exec_depend>
+  <exec_depend>rmf_fleet_msgs</exec_depend>
+  <exec_depend>free_fleet_client_ros2</exec_depend>
+  <exec_depend>free_fleet_server_ros2</exec_depend>
 
   <export>
     <build_type>ament_cmake</build_type>
   </export>
 </package>
-

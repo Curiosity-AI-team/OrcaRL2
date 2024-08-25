@@ -45,6 +45,7 @@ def generate_launch_description():
     }
 
     remappings=[
+          ("map", 'test_map'),
           ('imu', '/imu/data_raw'),
           ('rgb/image', '/camera_depth/image_raw'),
           ('rgb/camera_info', '/camera_depth/camera_info'),
