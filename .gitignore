@@ -3,6 +3,7 @@ logs/
 build/
 venv
 .rasa
+__pycache__
 /cognition/rasa_app/models
 *~
 yolov8m-pose.pt

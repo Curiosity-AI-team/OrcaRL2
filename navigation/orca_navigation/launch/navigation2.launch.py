@@ -37,6 +37,7 @@ def generate_launch_description():
         IncludeLaunchDescription(
             PythonLaunchDescriptionSource([nav2_launch_file_dir, '/bringup_launch.py']),
             launch_arguments={
+                'slam': 'False',
                 'map': map_dir,
                 'use_sim_time': use_sim_time,
                 'params': param_dir}.items(),

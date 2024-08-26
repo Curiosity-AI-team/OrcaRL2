@@ -74,3 +74,28 @@ ros2 launch orca_rtabmap orca_rtabmap_slam.launch.py
 
 ros2 launch orca_navigation navigation2.launch.py use_sim_time:=True
 ```
+
+
+```bash
+
+ros2 launch task_publisher rasa_task_publisher.launch.py
+
+ros2 launch boldbot_sim boldbot_sim_nav.launch.py
+# ros2 launch orca_control launch_robot.launch.py
+
+ros2 launch orca_free_fleet_server server.launch.xml
+
+ros2 launch orca_free_fleet_client client.launch.xml
+# ros2 launch ff_examples_ros2 fake_client.launch.xml
+
+ros2 launch orca_rtabmap orca_rtabmap_slam.launch.py use_sim_time:=true qos:=2
+
+ros2 launch orca_navigation navigation2.launch.py use_sim_time:=True
+```
+
+TODO:
+
+- Fix the rtabmap slam navigation problem
+- Add the pipeline from slam mapping -> localization with open rmf
+- Implement in gazebo from dirrect control cmd_vel to robot joints
+- Implement rasa_ai communication
