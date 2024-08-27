@@ -28,8 +28,6 @@ def generate_launch_description():
           'qos_scan':qos,
           'qos_image':qos,
           'qos_imu':qos,
-          # RTAB-Map's parameters should be strings:
-          'Mem/NotLinkedNodesKept':'false'
     }
 
     # Shared parameters between different nodes

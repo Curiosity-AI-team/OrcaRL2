@@ -91,6 +91,9 @@ ros2 launch orca_free_fleet_client client.launch.xml
 ros2 launch orca_rtabmap orca_rtabmap_slam.launch.py use_sim_time:=true qos:=2
 
 ros2 launch orca_navigation navigation2.launch.py use_sim_time:=True
+
+ros2 run rtabmap_slam rtabmap --params | grep g2o
+ros2 run rtabmap_odom rgbd_odometry --params
 ```
 
 TODO:

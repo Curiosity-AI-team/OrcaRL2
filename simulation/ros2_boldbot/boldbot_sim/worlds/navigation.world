@@ -49,7 +49,10 @@
       <link name="body">
         <visual name="visual">
           <geometry>
-            <mesh><uri>model://boldbot_sim/meshes/rchl_goal_2019.dae</uri></mesh>
+            <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://boldbot_sim/meshes/rchl_goal_2019.dae</uri>
+            </mesh>
           </geometry>
         </visual>
         <collision name="collision">
