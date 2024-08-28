@@ -17,6 +17,9 @@ def generate_launch_description():
           'guess_frame_id':'odom_cmd',
           'qos':qos,
           'wait_imu_to_init': True,
+          'OdomF2M/ScanSubtractRadius': '0.4',
+          'Odom/ResetCountdown': '10',
+          'OdomF2M/MaxSize': '2000'
     }
 
     rtabmap_parameters={
@@ -28,6 +31,8 @@ def generate_launch_description():
           'qos_scan':qos,
           'qos_image':qos,
           'qos_imu':qos,
+          'Mem/NotLinkedNodesKept':'false',
+          'Icp/VoxelSize': '0.4'
     }
 
     # Shared parameters between different nodes
@@ -39,11 +44,12 @@ def generate_launch_description():
           'use_sim_time':use_sim_time,
           'Reg/Strategy':'0',
           'Reg/Force3DoF':'true',
-          'Mem/NotLinkedNodesKept':'false',
+          'Vis/MaxFeatures': '2000',
+          'GFTT/MinDistance': '10'
     }
 
     remappings=[
-          ("map", 'test_map'),
+          ("map", 'map'),
           ('imu', '/imu/data_raw'),
           ('rgb/image', '/camera_depth/image_raw'),
           ('rgb/camera_info', '/camera_depth/camera_info'),
