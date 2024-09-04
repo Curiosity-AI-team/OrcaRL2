@@ -11,3 +11,8 @@ rules:
   steps:
   - intent: bot_challenge
   - action: utter_iamabot
+
+- rule: Greet the user in Telegram
+  steps:
+  - intent: start
+  - action: utter_greet

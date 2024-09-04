@@ -5,6 +5,7 @@ nlu:
 - intent: start
   examples: |
     - /start
+    - start
     - hello
     - hi
     - hello there

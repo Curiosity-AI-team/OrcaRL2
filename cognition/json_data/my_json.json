@@ -1,5 +1,3 @@
 [
-{"task_type":"Loop", "start_time":0, "priority":0, "description": {"num_loops":5, "start_name":"coe", "finish_name":"lounge"}},
-{"task_type": "Delivery", "start_time": 0, "priority": 0, "description": {"dropoff_ingestor": "coke_ingestor", "dropoff_place_name": "hardware_2", "pickup_dispenser": "coke_dispenser", "pickup_place_name": "pantry"}},
 {"task_type":"Loop", "start_time":0, "priority":0, "description": {"num_loops":5, "start_name":"pantry", "finish_name":"supplies"}}
 ]
