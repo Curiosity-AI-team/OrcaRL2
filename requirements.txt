@@ -1,4 +1,7 @@
-flask
-flask_cors
-flask_socketio
+telebot
+websockets
+sounddevice
+vosk
+requests
+rasa[full]
 fastapi
