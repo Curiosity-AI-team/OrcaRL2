@@ -18,6 +18,8 @@ from rclpy.qos import QoSHistoryPolicy as History
 from rclpy.qos import QoSDurabilityPolicy as Durability
 from rclpy.qos import QoSReliabilityPolicy as Reliability
 
+import sys
+import os
 # Read the map file in function timer_callback
 # Read the json file/input from rasa in timer_callback_test and then publish to ros
 
@@ -71,6 +73,8 @@ class BodyActionPublisher(Node):
             task_id, err_msg = self.submit_task_request(task)
             print(f"Task: {task_id} Error: {err_msg}")
             print("-"*80)
+
+        sys.exit()
 
     def submit_task_request(self, req_json) -> Tuple[str, str]:
         """

@@ -7,4 +7,5 @@ while bot_message != "Bye":
 	print("Bot says, ")
 	for i in r.json():
 		# bot_message = i['text']
+		# print(r.json())
 		print(f"{i}")
