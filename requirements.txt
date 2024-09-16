@@ -5,3 +5,8 @@ vosk
 requests
 rasa[full]
 fastapi
+janus
+uvicorn
+torch==1.10.0+cu113
+torchvision==0.11.1+cu113
+torchaudio==0.10.0+cu113
