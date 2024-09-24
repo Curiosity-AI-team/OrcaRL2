@@ -135,4 +135,18 @@ ros2 launch orca_free_fleet_client client.launch.xml
 ros2 launch orca_free_fleet_server server.launch.xml
 
 ros2 launch task_publisher rasa_task_publisher.launch.py
-```
+
+ros2 launch orca_free_fleet_server server.launch.xml map:=office
+ros2 launch orca_free_fleet_client client.launch.xml
+ros2 launch simulation launch_nav.launch.py
+
+ros2 run ff_examples_ros2 send_destination_request.py -f tinyRobot3 -r tinyRobot13 -x 1.725 -y -0.39 --yaw 0.0 -i 1
+
+ros2 run ff_examples_ros2 send_path_request.py -f tinyRobot3 -r tinyRobot13 -i 2 -p '[{"x": 1.725, "y": -0.39, "yaw": 0.0, "level_name": "L1"}, {"x": 1.737, "y": 0.951, "yaw": 1.57, "level_name": "L1"}, {"x": -0.616, "y": 1.852, "yaw": 3.14, "level_name": "L1"}, {"x": -0.626, "y": -1.972, "yaw": 4.71, "level_name": "L1"}]'
+
+
+ros2 run ff_examples_ros2 send_mode_request.py -f tinyRobot3 -r tinyRobot13 -m pause -i 3
+ros2 run ff_examples_ros2 send_mode_request.py -f tinyRobot3 -r tinyRobot13 -m resume -i 4
+
+ros2 bag play rosbag2_2024_09_23-21_20_27/rosbag2_2024_09_23-21_20_27_0.db3
+``` 

@@ -15,13 +15,16 @@
             <max_wheel_torque>200</max_wheel_torque>
             <max_wheel_acceleration>10.0</max_wheel_acceleration>
 
-            
+            <ros>
+                <argument>cmd_vel:=cmd_vel_out</argument>
+            </ros>
+            <!-- <command_topic>cmd_vel_out</command_topic> -->
             <!-- Output -->
             <odometry_frame>odom</odometry_frame>
             <robot_base_frame>base_footprint</robot_base_frame>
 
             <publish_odom>true</publish_odom>
-            <publish_odom_tf>false</publish_odom_tf>
+            <publish_odom_tf>true</publish_odom_tf>
             <publish_wheel_tf>false</publish_wheel_tf>
 
         </plugin>

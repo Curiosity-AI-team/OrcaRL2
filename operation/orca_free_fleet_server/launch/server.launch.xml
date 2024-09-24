@@ -3,21 +3,24 @@
 <launch>
 
   <arg name="use_sim_time" default="false"/>
+  <arg name="map" default="office"/>
+  <arg name="viz_config_file" default="$(find-pkg-share rmf_demos)/include/office/office.rviz"/>
+  <arg name="config_robot" default="robot_config"/>
 
   <!-- Common launch -->
   <include file="$(find-pkg-share rmf_demos)/common.launch.xml">
     <arg name="use_sim_time" value="$(var use_sim_time)"/>
-    <arg name="viz_config_file" value ="$(find-pkg-share rmf_demos)/include/office/office.rviz"/>
-    <arg name="config_file" value="$(find-pkg-share rmf_demos_maps)/cave/cave.building.yaml"/>
-    <!-- <arg name="dashboard_config_file" value="$(find-pkg-share rmf_demos_dashboard_resources)/office/dashboard_config.json"/> -->
+    <arg name="viz_config_file" value ="$(var viz_config_file)"/>
+    <arg name="config_file" value="$(find-pkg-share rmf_demos_maps)/$(var map)/$(var map).building.yaml"/>
+    <arg name="dashboard_config_file" value="$(find-pkg-share rmf_demos_dashboard_resources)/office/dashboard_config.json"/>
   </include>
 
   <!-- TinyRobot fleet adapter -->
   <group>
     <include file="$(find-pkg-share rmf_demos_fleet_adapter)/launch/fleet_adapter.launch.xml">
       <arg name="use_sim_time" value="$(var use_sim_time)"/>
-      <arg name="nav_graph_file" value="$(find-pkg-share rmf_demos_maps)/maps/cave/nav_graphs/0.yaml" />
-      <arg name="config_file" value="$(find-pkg-share rmf_demos)/config/cave/turtlebot_config.yaml"/>
+      <arg name="nav_graph_file" value="$(find-pkg-share rmf_demos_maps)/maps/$(var map)/nav_graphs/0.yaml" />
+      <arg name="config_file" value="$(find-pkg-share rmf_demos)/config/$(var map)/$(var config_robot).yaml"/>
     </include>
   </group>
 
@@ -42,11 +45,7 @@
     <param name="update_state_frequency" value="20.0"/>
     <param name="publish_state_frequency" value="2.0"/>
 
-    <param name="translation_x" value="0.0"/>
-    <param name="translation_y" value="0.0"/>
-    <param name="rotation" value="0.0"/>
-    <param name="scale" value="1.0"/>
-
+    <param from="$(find-pkg-share orca_navigation)/2d_image/$(var map)/$(var map).param.yaml"/>
   </node>
 
 </launch>

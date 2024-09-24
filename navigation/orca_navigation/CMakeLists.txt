@@ -15,7 +15,9 @@ find_package(vision_msgs REQUIRED)
 install(DIRECTORY
   launch
   config
-  map
+  2d_image
+  2d_map
+  3d_map
   DESTINATION share/${PROJECT_NAME}/
 )
 
