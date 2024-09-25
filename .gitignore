@@ -1,6 +1,7 @@
 devel/
 logs/
 build/
+rosbag/
 venv
 .rasa
 __pycache__

@@ -50,7 +50,7 @@ ros2 launch orca_rtabmap orca_rtabmap_slam_rgbd.launch.py use_sim_time:=true qos
 2) Save map data
 ```bash
 # use rviz the see the map topic then
-ros2 launch orca_navigation map_saver.launch.py map:=my_map
+ros2 launch orca_navigation map_saver.launch.py map:=new_map
 ```
 3) Use map to make fleet management data
 ```bash
@@ -59,7 +59,7 @@ ros2 launch orca_navigation map_saver.launch.py map:=my_map
 traffic-editor
 
 # rebuild the open_rmf_map again
-python3 /home/vboxuser/orca_robot/docs/openrmf_convert.py office
+python3 /home/vboxuser/orca_robot/docs/openrmf_convert.py new_map
 sudo rm -r /home/vboxuser/orca_robot/colcon_ws/build/rmf_demos
 sudo rm -r /home/vboxuser/orca_robot/colcon_ws/build/rmf_demos_maps
 sudo rm -r /home/vboxuser/orca_robot/colcon_ws/build/rmf_demos_dashboard_resources
@@ -84,7 +84,7 @@ ros2 launch orca_free_fleet_client client.launch.xml
 # or
 # ros2 launch orca_free_fleet_client fake_client.launch.xml
 
-ros2 launch orca_free_fleet_server server.launch.xml map:=office
+ros2 launch orca_free_fleet_server server.launch.xml map:=new_map
 
 ros2 launch task_publisher rasa_task_publisher.launch.py
 ```

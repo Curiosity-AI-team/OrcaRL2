@@ -45,7 +45,7 @@
     <param name="update_state_frequency" value="20.0"/>
     <param name="publish_state_frequency" value="2.0"/>
 
-    <param from="$(find-pkg-share orca_navigation)/2d_image/$(var map)/$(var map).param.yaml"/>
+    <param from="$(find-pkg-share rmf_demos_maps)/$(var map)/$(var map).param.yaml"/>
   </node>
 
 </launch>

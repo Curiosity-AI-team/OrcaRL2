@@ -1,6 +1,0 @@
-/**: # This will put all the parameters in every node
-  ros__parameters:
-    rotation: 0.0
-    scale: 1.0
-    translation_x: -3.57
-    translation_y: -4.11
