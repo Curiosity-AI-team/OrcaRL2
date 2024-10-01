@@ -2,6 +2,7 @@ devel/
 logs/
 build/
 rosbag/
+vosk_model/
 venv
 .rasa
 __pycache__
