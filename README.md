@@ -50,6 +50,8 @@ ros2 launch orca_rtabmap orca_rtabmap_slam_rgbd.launch.py use_sim_time:=true qos
 2) Save map data
 ```bash
 # use rviz the see the map topic then
+
+# This step is the beginning if you use remote robot
 ros2 launch orca_navigation map_saver.launch.py map:=new_map
 ```
 3) Use map to make fleet management data
@@ -57,6 +59,8 @@ ros2 launch orca_navigation map_saver.launch.py map:=new_map
 
 # use traffic editor to make fleet
 traffic-editor
+
+# save the map inside ~/colcon_ws/src/OrcaRL2/navigation/orca_navigation/2d_map/*
 
 # rebuild the open_rmf_map again
 python3 /home/vboxuser/orca_robot/docs/openrmf_convert.py new_map
@@ -88,3 +92,17 @@ ros2 launch orca_free_fleet_server server.launch.xml map:=new_map
 
 ros2 launch task_publisher rasa_task_publisher.launch.py
 ```
+
+Or, submit a task via CLI:
+
+```bash
+ros2 run rmf_demos_tasks dispatch_patrol -p coe lounge -n 3 --use_sim_time
+ros2 run rmf_demos_tasks dispatch_delivery -p pantry -ph coke_dispenser -d hardware_2 -dh coke_ingestor --use_sim_time
+```
+
+
+todo: add fake client to make it in right place
+
+integrate way to make easy to make map
+
+add the way to generate rmf_demos_tasks
