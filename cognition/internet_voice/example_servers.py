@@ -10,7 +10,7 @@ app = FastAPI()
 
 # Load Vosk model
 try:
-    model = Model(r"D:\Voice-Assistant\Internet_voice\model")  # Replace with your model path
+    model = Model(r"D:\Voice-Assistant\Internet_voice\vosk_model")  # Replace with your model path
     logging.info("Vosk model loaded successfully.")
 except Exception as e:
     logging.error(f"Could not load Vosk model: {e}")
