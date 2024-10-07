@@ -12,7 +12,7 @@
     <arg name="use_sim_time" value="$(var use_sim_time)"/>
     <arg name="viz_config_file" value ="$(var viz_config_file)"/>
     <arg name="config_file" value="$(find-pkg-share rmf_demos_maps)/$(var map)/$(var map).building.yaml"/>
-    <arg name="dashboard_config_file" value="$(find-pkg-share rmf_demos_dashboard_resources)/office/dashboard_config.json"/>
+    <arg name="dashboard_config_file" value="$(find-pkg-share rmf_demos_dashboard_resources)/$(var map)/dashboard_config.json"/>
   </include>
 
   <!-- TinyRobot fleet adapter -->
@@ -24,10 +24,7 @@
     </include>
   </group>
 
-  <node pkg="free_fleet_server_ros2"
-      exec="free_fleet_server_ros2"
-      name="turtlebot3_fleet_server_node"
-      output="both">
+  <node pkg="free_fleet_server_ros2" exec="free_fleet_server_ros2" name="fleet_server_node" output="screen">
 
     <param name="fleet_name" value="tinyRobot"/>
 

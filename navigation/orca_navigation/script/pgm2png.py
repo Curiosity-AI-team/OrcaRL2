@@ -2,6 +2,7 @@ import cv2
 import sys
 import yaml
 import os
+from pathlib import Path
 
 if len(sys.argv) > 1:
     map_name = ' '.join(sys.argv[1:])
@@ -10,37 +11,40 @@ else:
     sys.exit()
 print(f"MAP NAME is {map_name}")
 
-directory = f"/home/vboxuser/orca_robot/colcon_ws/src/OrcaRL2/simulation/rmf_demos/rmf_demos_maps/maps/{map_name}"
+script_dir = Path(__file__).resolve().parent.parent.parent.parent
+    
+directory = os.path.join(script_dir, f"simulation/rmf_demos/rmf_demos_maps/maps/{map_name}")
 if not os.path.exists(directory):
     os.makedirs(directory)
 
-input = cv2.imread(f"/home/vboxuser/orca_robot/colcon_ws/src/OrcaRL2/navigation/orca_navigation/2d_map/{map_name}.pgm", -1)
-cv2.imwrite(f"/home/vboxuser/orca_robot/colcon_ws/src/OrcaRL2/simulation/rmf_demos/rmf_demos_maps/maps/{map_name}/{map_name}.png", input)
+input_path = os.path.join(script_dir, f"navigation/orca_navigation/2d_map/{map_name}.pgm")
+output_path = os.path.join(script_dir, f"simulation/rmf_demos/rmf_demos_maps/maps/{map_name}/{map_name}.png")
 
+input_img = cv2.imread(input_path, -1)
+cv2.imwrite(output_path, input_img)
 
-with open(f"/home/vboxuser/orca_robot/colcon_ws/src/OrcaRL2/navigation/orca_navigation/2d_map/{map_name}.yaml") as file:
+yaml_input_path = os.path.join(script_dir, f"navigation/orca_navigation/2d_map/{map_name}.yaml")
+yaml_output_path = os.path.join(script_dir, f"simulation/rmf_demos/rmf_demos_maps/maps/{map_name}/{map_name}.param.yaml")
+
+with open(yaml_input_path) as file:
     original_data = yaml.safe_load(file)
 
 origin = original_data['origin']
+scale = original_data['resolution']
+height, width = input_img.shape
 
-# Create a new dictionary with the required parameters
 new_params = {
-    '/**': {  # Puts all parameters in every node
+    '/**': {  
         'ros__parameters': {
             'translation_x': origin[0],
-            'translation_y': origin[1],
-            'rotation': 0.0,  # Default value
-            'scale': 1.0      # Default value
+            'translation_y': round(height*scale+origin[1], 2),
+            'rotation': 0.0,
+            'scale': scale
         }
     }
 }
 
-# Update the new_params dictionary with the origin values
-# new_params.update({'translation_x': origin[0], 'translation_y': origin[1]})
-
-# Write the new YAML file
-with open(f"/home/vboxuser/orca_robot/colcon_ws/src/OrcaRL2/simulation/rmf_demos/rmf_demos_maps/maps/{map_name}/{map_name}.param.yaml", 'w') as file:
+with open(yaml_output_path, 'w') as file:
     yaml.dump(new_params, file, default_flow_style=False)
-
 
 print("Done!")
