@@ -3,6 +3,9 @@ import json
 import sys
 import itertools
 import os
+from pathlib import Path
+import random
+import time
 
 def load_yaml(file_path):
     try:
@@ -73,6 +76,8 @@ def initialize_vertex_lists():
     return {
         'is_holding_point': [],
         'is_parking_spot': [],
+        'spawn_robot_name_x': [],
+        'spawn_robot_name_y': [],
         'charger_waypoint': [],
         'dropoff_ingestor': [],
         'pickup_dispenser': [],
@@ -91,6 +96,9 @@ def parse_vertices(vertices, vertex_lists):
                 vertex_lists['is_holding_point'].append(vertex[3])
             if attributes.get('is_parking_spot', [None, False])[1]:
                 vertex_lists['is_parking_spot'].append(vertex[3])
+            if attributes.get('spawn_robot_name', [None, False])[1]:
+                vertex_lists['spawn_robot_name_x'].append(vertex[0])
+                vertex_lists['spawn_robot_name_y'].append(vertex[1])
             if attributes.get('dropoff_ingestor', [None, False])[1]:
                 vertex_lists['dropoff_ingestor'].append(vertex[3])
             if attributes.get('pickup_dispenser', [None, False])[1]:
@@ -191,6 +199,68 @@ def write_json(output_file_path, data):
         json.dump(data, json_file, indent=4)
     print(f"JSON file generated at {output_file_path}")
 
+def write_ros_tasks(output_ros_tasks, json_config):
+
+    # Ensure the output directory exists
+    directory = os.path.dirname(output_ros_tasks)
+    if not os.path.exists(directory):
+        os.makedirs(directory)
+
+    with open(output_ros_tasks, "w") as md_file:
+        md_file.write("# ROS2 Command List\n\n")
+
+        # Write delivery tasks to markdown
+        if json_config["task"]["Delivery"] != {}:
+            md_file.write("## Delivery Tasks\n\n")
+            delivery_data = json_config["task"]["Delivery"]["option"]
+            for task_id, task_info in delivery_data.items():
+                pickup_place_name = task_info.get('pickup_place_name', 'N/A')
+                pickup_dispenser = task_info.get('pickup_dispenser', 'N/A')
+                dropoff_place_name = task_info.get('dropoff_place_name', 'N/A')
+                dropoff_ingestor = task_info.get('dropoff_ingestor', 'N/A')
+                command = (f"ros2 run rmf_demos_tasks dispatch_delivery "
+                        f"-p {pickup_place_name} -ph {pickup_dispenser} "
+                        f"-d {dropoff_place_name} -dh {dropoff_ingestor} --use_sim_time")
+                md_file.write(f"- `{command}`\n")
+
+        # Write loop tasks to markdown
+        if json_config["task"]["Loop"] != {}:
+            md_file.write("\n## Loop Tasks\n\n")
+            loop_data = json_config["task"]["Loop"]["places"]
+            for i in range(len(loop_data)):
+                rand_n1 = random.randint(0, len(loop_data) - 1)
+                time.sleep(0.001)
+                rand_n2 = random.randint(0, len(loop_data) - 1)
+                time.sleep(0.001)
+                r_n3 = random.randint(0, len(loop_data) - 1)
+                command = (f"ros2 run rmf_demos_tasks dispatch_patrol "
+                        f"-p {loop_data[rand_n1]} {loop_data[rand_n2]} "
+                        f"-n {r_n3} --use_sim_time")
+                md_file.write(f"- `{command}`\n")
+
+    print(f"ROS commands generated at {output_ros_tasks}")
+
+def read_yaml_scale(file_path):
+    try:
+        with open(file_path, 'r') as file:
+            data = yaml.safe_load(file)
+        
+        # Access the nested structure
+        data = data['/**']['ros__parameters']
+        
+        return data
+    
+    except FileNotFoundError:
+        print(f"Error: File '{file_path}' not found.")
+        sys.exit()
+    except KeyError:
+        print("Error: Invalid YAML structure.")
+        sys.exit()
+    except Exception as e:
+        print(f"An error occurred: {e}")
+        sys.exit()
+
+
 if __name__ == "__main__":
     if len(sys.argv) > 1:
         map_name = ' '.join(sys.argv[1:])
@@ -198,15 +268,21 @@ if __name__ == "__main__":
         print("Error: map_name must be provided")
         sys.exit()
 
-    input_file_path = f'/home/vboxuser/orca_robot/colcon_ws/src/OrcaRL2/simulation/rmf_demos/rmf_demos_maps/maps/{map_name}/{map_name}.building.yaml'
+    script_dir = Path(__file__).resolve().parent.parent.parent.parent
+    
+    input_file_path = os.path.join(script_dir, f'simulation/rmf_demos/rmf_demos_maps/maps/{map_name}/{map_name}.building.yaml')
+    # input_file_path = f'/home/vboxuser/orca_robot/colcon_ws/src/OrcaRL2/simulation/rmf_demos/rmf_demos_maps/maps/{map_name}/{map_name}.building.yaml'
+    print(f"Input file path: {input_file_path}")
     building_data = load_yaml(input_file_path)
     fleet_config = initialize_fleet_config()
 
     agent_names = extract_robot_info(building_data)
+    print(f"Agent names: {agent_names}")
 
     levels = building_data.get('levels', {})
     level_name = next(iter(levels.keys()), 'Not found')
-    l1_data = levels.get('L1', {})
+    print(f"Level names: {level_name}")
+    l1_data = levels.get(level_name, {})
     vertices = l1_data.get('vertices', [])
 
     vertex_lists = initialize_vertex_lists()
@@ -226,8 +302,28 @@ if __name__ == "__main__":
 
     json_config = generate_json_config(delivery_options, unique_elements, vertex_lists['is_cleaning_zone'])
 
-    output_yaml_path = f'/home/vboxuser/orca_robot/colcon_ws/src/OrcaRL2/simulation/rmf_demos/rmf_demos/config/{map_name}/robot_config.yaml'
+    print("For the fake client, this is the tf coordnates from map->base_footprint to test spawn")
+    yaml_input_path = os.path.join(script_dir, f"simulation/rmf_demos/rmf_demos_maps/maps/{map_name}/{map_name}.param.yaml")
+    map_yaml = read_yaml_scale(yaml_input_path)
+
+    scale = map_yaml['scale']
+    map_x = map_yaml['translation_x']
+    map_y = map_yaml['translation_y']
+
+    x_list = vertex_lists["spawn_robot_name_x"]
+    y_list = vertex_lists["spawn_robot_name_y"]
+    for i in range(0,len(x_list)):
+        print(f"{i}: x= {round(-map_x - x_list[i]*scale,2)} y= {round(-map_y + y_list[i]*scale,2)}")
+
+    print("Finish!")
+    print("#"*80)
+    # output_yaml_path = f'/home/vboxuser/orca_robot/colcon_ws/src/OrcaRL2/simulation/rmf_demos/rmf_demos/config/{map_name}/robot_config.yaml'
+    output_yaml_path = os.path.join(script_dir, f'simulation/rmf_demos/rmf_demos/config/{map_name}/robot_config.yaml')
     write_yaml(output_yaml_path, fleet_config)
 
-    output_json_path = f"/home/vboxuser/orca_robot/colcon_ws/src/OrcaRL2/simulation/rmf_demos/rmf_demos_dashboard_resources/{map_name}/dashboard_config.json"
+    # output_json_path = f"/home/vboxuser/orca_robot/colcon_ws/src/OrcaRL2/simulation/rmf_demos/rmf_demos_dashboard_resources/{map_name}/dashboard_config.json"
+    output_json_path = os.path.join(script_dir, f'simulation/rmf_demos/rmf_demos_dashboard_resources/{map_name}/dashboard_config.json')
     write_json(output_json_path, json_config)
+
+    output_ros_tasks = os.path.join(script_dir, f'GENERATED_ROS_COMMANDS.md')
+    write_ros_tasks(output_ros_tasks, json_config)

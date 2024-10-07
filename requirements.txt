@@ -5,3 +5,10 @@ vosk
 requests
 rasa[full]
 fastapi
+asyncio
+aiohttp
+janus
+openwakeword
+soundfile
+json
+uvicorn

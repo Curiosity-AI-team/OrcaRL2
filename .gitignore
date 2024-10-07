@@ -4,6 +4,7 @@ build/
 rosbag/
 vosk_model/
 venv
+GENERATED_ROS_COMMANDS.md
 .rasa
 __pycache__
 /cognition/rasa_app/models
