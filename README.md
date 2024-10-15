@@ -68,14 +68,14 @@ ros2 launch orca_navigation map_saver.launch.py map:=new_map
 
 3) Use map to make fleet management data
 
+save the map inside `~/colcon_ws/src/OrcaRL2/navigation/orca_navigation/2d_map/<>`
 Use traffic editor to make fleet
 ```bash
 traffic-editor
 ```
 
-save the map inside `~/colcon_ws/src/OrcaRL2/navigation/orca_navigation/2d_map/*`
 ```bash
-~/orca_robot/colcon_ws/src/OrcaRL2/operation/shell_scripts/map_builder.sh
+~/orca_robot/colcon_ws/src/OrcaRL2/operation/shell_scripts/map_builder.sh new_map
 ```
 
 Alternative:
