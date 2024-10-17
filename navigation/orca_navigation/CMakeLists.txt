@@ -20,6 +20,13 @@ install(DIRECTORY
   DESTINATION share/${PROJECT_NAME}/
 )
 
+install(
+  PROGRAMS
+  scripts/openrmf_convert.py
+  scripts/pgm2png.py
+  DESTINATION share/${PROJECT_NAME}/scripts
+)
+
 if(BUILD_TESTING)
   find_package(ament_lint_auto REQUIRED)
   # the following line skips the linter which checks for copyrights

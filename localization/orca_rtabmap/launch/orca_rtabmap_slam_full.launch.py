@@ -1,61 +1,62 @@
-
 from launch import LaunchDescription
-from launch.actions import DeclareLaunchArgument, SetEnvironmentVariable
+from launch.actions import DeclareLaunchArgument
 from launch.substitutions import LaunchConfiguration
 from launch.conditions import IfCondition, UnlessCondition
 from launch_ros.actions import Node
-
+from launch_ros.actions import ComposableNodeContainer
+from launch_ros.descriptions import ComposableNode
 
 def generate_launch_description():
 
     use_sim_time = LaunchConfiguration('use_sim_time')
     qos = LaunchConfiguration('qos')
     localization = LaunchConfiguration('localization')
-
-    icp_parameters={
-          'odom_frame_id':'odom',
-          'guess_frame_id':'odom_cmd',
-          'qos':qos,
-          'wait_imu_to_init': True,
+    
+    # Parameters for rtabmap node
+    rtabmap_parameters = {
+        'frame_id': 'base_footprint',
+        'use_sim_time': use_sim_time,
+        'subscribe_depth': False,
+        'subscribe_rgb': False,
+        'subscribe_scan': False,
+        'subscribe_scan_cloud': True,
+        'approx_sync': True,
+        'use_action_for_goal': True,
+        'qos_scan_cloud': qos,
+        'qos_imu': qos,
+        'Reg/Strategy': '1',
+        'Reg/Force3DoF': 'true',
+        'RGBD/NeighborLinkRefining': 'True',
+        'Grid/RangeMin': '0.2',  # Ignore points on the robot itself
+        'Optimizer/GravitySigma': '0'  # Disable IMU constraints (we are already in 2D)
     }
+    
+    rtabmap_remappings = [
+        ('scan_cloud', '/points2')
+    ]
 
-    rtabmap_parameters={
-          'subscribe_scan':False,
-        #   'tag_detections':'/detections',
-          'fiducial_transforms':'/fiducial_transforms',
-          'use_action_for_goal':True,
-          'odom_sensor_sync': True,
-          'qos_scan':qos,
-          'qos_image':qos,
-          'qos_imu':qos,
-          # RTAB-Map's parameters should be strings:
-          'Mem/NotLinkedNodesKept':'false'
+    icp_odom_remappings = [
+        ('scan_cloud', '/points2')
+    ]
+
+    # Parameters for icp_odometry node
+    icp_odom_parameters = {
+        'frame_id': 'base_footprint',
+        'odom_frame_id': 'odom',
+        'publish_tf': True,
+        'wait_for_transform': 0.2,
+        'use_sim_time': use_sim_time,
+        'Reg/Strategy': '1',
+        'Reg/Force3DoF': 'true',
+        'qos_scan_cloud': qos,
+        'Odom/ResetCountdown': '10',
     }
-
-    # Shared parameters between different nodes
-    shared_parameters={
-          'subscribe_depth':False,
-          'subscribe_rgbd':True,
-          'visual_odometry':False,
-          'frame_id':'base_footprint',
-          'use_sim_time':use_sim_time,
-          'Reg/Strategy':'0',
-          'Reg/Force3DoF':'true',
-          'Mem/NotLinkedNodesKept':'false',
-    }
-
-    remappings=[
-          ('imu', '/imu/data_raw'),
-          ('scan', '/points2'),
-          ('rgb/image', '/camera_depth/image_raw'),
-          ('rgb/camera_info', '/camera_depth/camera_info'),
-          ('depth/image', '/camera_depth/depth/image_raw')]
 
     return LaunchDescription([
 
         # Launch arguments
         DeclareLaunchArgument(
-            'use_sim_time', default_value='true', choices=['true', 'false'],
+            'use_sim_time', default_value='true',
             description='Use simulation (Gazebo) clock if true'),
         
         DeclareLaunchArgument(
@@ -63,47 +64,94 @@ def generate_launch_description():
             description='QoS used for input sensor topics'),
             
         DeclareLaunchArgument(
-            'localization', default_value='false', choices=['true', 'false'],
-            description='Launch rtabmap in localization mode (a map should have been already created).'),
+            'localization', default_value='false',
+            description='Launch in localization mode.'),
 
-        # Nodes to launch
+        # PointCloud filtering
+
+        ComposableNodeContainer(
+            name='box_filter_container',
+            namespace='',
+            package='rclcpp_components',
+            executable='component_container_mt',
+            composable_node_descriptions=[
+                # Box Filter Node
+                ComposableNode(
+                    package='pcl_ros',
+                    plugin='pcl_ros::CropBox',
+                    name='box_filter',
+                    parameters=[{
+                        'max_x': 30.0,
+                        # 'max_y': -0.8,
+                        'max_y': 30.0,
+                        'max_z': 30.0,
+                        'min_x': -30.0,
+                        'min_y': -30.0,
+                        'min_z': -30.0,
+                    }],
+                    remappings=[
+                        ('input', '/camera_depth/points'),
+                        ('output', '/points2'),
+                    ],
+                ),
+            ],
+            output='screen',
+        ),
+
         Node(
-            package='rtabmap_sync', executable='rgbd_sync', output='screen',
-            parameters=[{'approx_sync':True, 'use_sim_time':use_sim_time, 'qos':qos}],
-            remappings=remappings,
-            arguments=['--ros-args', '--log-level', 'WARN']
-            ),
+            package='points_concat_filter',
+            executable='points_concat_async_node',
+            name='points_concat_async_node',
+            output='screen',
+            # parameters=[icp_odom_parameters],
+            # remappings=icp_odom_remappings,
+            arguments=['--ros-args', '--log-level', 'info']
+        ),
 
+        # # ICP Odometry Node
         Node(
-            package='rtabmap_odom', executable='rgbd_odometry', output='screen',
-            parameters=[icp_parameters, shared_parameters],
-            remappings=remappings,
-            arguments=['--ros-args', '--log-level', 'WARN']
-            ),
+            package='rtabmap_odom',
+            executable='icp_odometry',
+            name='icp_odometry',
+            output='screen',
+            parameters=[icp_odom_parameters],
+            remappings=icp_odom_remappings,
+            arguments=['--ros-args', '--log-level', 'info']
+        ),
 
-        # SLAM Mode:
+        # RTAB-Map SLAM Node (Mapping Mode)
         Node(
             condition=UnlessCondition(localization),
-            package='rtabmap_slam', executable='rtabmap', output='screen',
-            parameters=[rtabmap_parameters, shared_parameters],
-            remappings=remappings,
-            arguments=['-d', '--ros-args', '--log-level', 'WARN']), # This will delete the previous database (~/.ros/rtabmap.db)
-            
-        # Localization mode:
+            package='rtabmap_slam',
+            executable='rtabmap',
+            name='rtabmap',
+            output='screen',
+            parameters=[rtabmap_parameters],
+            remappings=rtabmap_remappings,
+            arguments=['-d']
+        ),
+        
+        # RTAB-Map SLAM Node (Localization Mode)
         Node(
             condition=IfCondition(localization),
-            package='rtabmap_slam', executable='rtabmap', output='screen',
-            parameters=[rtabmap_parameters, shared_parameters,
-              {'Mem/IncrementalMemory':'False',
-               'Mem/InitWMWithAllNodes':'True'}],
-            remappings=remappings,
-            arguments=['--ros-args', '--log-level', 'WARN']
-            ),
+            package='rtabmap_slam',
+            executable='rtabmap',
+            name='rtabmap',
+            output='screen',
+            parameters=[rtabmap_parameters, {
+                'Mem/IncrementalMemory': 'False',
+                'Mem/InitWMWithAllNodes': 'True'
+            }],
+            remappings=rtabmap_remappings
+        ),
 
+        # RTAB-Map Visualization Node
         Node(
-            package='rtabmap_viz', executable='rtabmap_viz', output='screen',
-            parameters=[rtabmap_parameters, shared_parameters],
-            remappings=remappings,
-            arguments=['--ros-args', '--log-level', 'WARN']
-            ),
+            package='rtabmap_viz',
+            executable='rtabmap_viz',
+            name='rtabmap_viz',
+            output='screen',
+            parameters=[rtabmap_parameters],
+            remappings=rtabmap_remappings
+        ),
     ])
