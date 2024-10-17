@@ -1,7 +1,9 @@
 #!/bin/bash
 
+MAP_NAME=$1
+
 # Run Python script
-/bin/python3 ~/orca_robot/colcon_ws/src/OrcaRL2/navigation/orca_navigation/script/openrmf_convert.py new_map
+/bin/python3 ~/orca_robot/colcon_ws/src/OrcaRL2/navigation/orca_navigation/script/openrmf_convert.py $MAP_NAME
 
 # Remove build directories
 sudo rm -r ~/orca_robot/colcon_ws/build/rmf_demos

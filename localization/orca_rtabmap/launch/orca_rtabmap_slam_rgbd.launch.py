@@ -32,7 +32,9 @@ def generate_launch_description():
           'qos_image':qos,
           'qos_imu':qos,
           'Mem/NotLinkedNodesKept':'false',
-          'Icp/VoxelSize': '0.4'
+          'Icp/VoxelSize': '0.4',
+        #   'Rtabmap/DetectionRate': '5',
+        #   'Mem/DatabasePath': '/path/to/your_map.db',
     }
 
     # Shared parameters between different nodes

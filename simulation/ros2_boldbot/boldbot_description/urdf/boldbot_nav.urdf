@@ -1206,10 +1206,10 @@
         <update_rate>1</update_rate>
         <pose>0 0 0 0 0 0</pose>
         <camera name="camera_depth">
-            <horizontal_fov>1.3962634</horizontal_fov> <!-- Field of view in radians -->
+            <horizontal_fov>2.3962634</horizontal_fov> <!-- Field of view in radians -->
             <image>
-                <width>320</width>
-                <height>240</height>
+                <width>192</width>
+                <height>144</height>
                 <!-- <format>R8G8B8</format> -->
             </image>
         </camera>
@@ -1229,10 +1229,10 @@
         <update_rate>30</update_rate>
 	      <pose>0 0 0 0 0 0</pose>
         <camera name="camera_rgb">
-          <horizontal_fov>1.02974</horizontal_fov>
+          <horizontal_fov>2.02974</horizontal_fov>
           <image>
-            <width>320</width>
-            <height>240</height>
+            <width>192</width>
+            <height>144</height>
             <format>R8G8B8</format>
           </image>
           <clip>
