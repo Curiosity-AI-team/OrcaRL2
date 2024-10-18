@@ -110,6 +110,19 @@ def generate_launch_description():
         output='screen'
     )
 
+    # this package is not work well
+    concat_pointcloud_node = Node(
+        package='points_concat_filter',
+        executable='points_concat_async_node',
+        name='points_concat_async_node',
+        remappings=[
+            ('front_points', '/camera_depth/points'),
+            ('left_points', '/points2_scan')
+        ],
+        output='screen'
+    )
+
+
     # Launch all nodes with the model path set
     return LaunchDescription([
         set_gazebo_model_path,  # Set the custom model path environment variable
@@ -120,5 +133,6 @@ def generate_launch_description():
         spawn_entity,
         diff_drive_spawner,
         joint_broad_spawner,
-        laser_to_pointcloud_node
+        laser_to_pointcloud_node,
+        # concat_pointcloud_node
     ])
