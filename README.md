@@ -5,6 +5,8 @@ TODO:
 - Fix the rtabmap slam navigation problem
 - Implement in gazebo from dirrect control cmd_vel to robot joints
 - Implement rasa_ai communication
+- Add point cloud2 concatenation
+- wrong free fleet behavior when robot exiting task
 
 For more info:
 https://dds-demonstrators.readthedocs.io/en/latest/Teams/1.Hurricane/DDSWan.html
@@ -46,6 +48,8 @@ ros2 launch boldbot_sim boldbot_sim_nav.launch.py
 # or
 # ros2 launch orca_control launch_robot.launch.py
 ros2 launch orca_rtabmap orca_rtabmap_slam_rgbd.launch.py use_sim_time:=true qos:=2
+
+ros2 launch orca_rtabmap orca_rtabmap_slam_full.launch.py use_sim_time:=true qos:=2
 ```
 
 
@@ -81,7 +85,7 @@ traffic-editor
 Alternative:
 ```bash
 # rebuild the open_rmf_map again
-/bin/python3 ~/orca_robot/colcon_ws/src/OrcaRL2/navigation/orca_navigation/script/openrmf_convert.py new_map
+/bin/python3 ~/orca_robot/colcon_ws/src/OrcaRL2/navigation/orca_navigation/scripts/openrmf_convert.py new_map
 sudo rm -r ~/orca_robot/colcon_ws/build/rmf_demos
 sudo rm -r ~/orca_robot/colcon_ws/build/rmf_demos_maps
 sudo rm -r ~/orca_robot/colcon_ws/build/rmf_demos_dashboard_resources
@@ -97,21 +101,29 @@ rtabmap -i /home/vboxuser/orca_robot/colcon_ws/src/OrcaRL2/navigation/orca_navig
 
 4) Run the robot in localization mode and use fleet to run the task
 ```bash
-
+ROS_DOMAIN_ID=1
 ros2 launch boldbot_sim boldbot_sim_nav.launch.py
 # or
 # ros2 launch orca_control launch_robot.launch.py
+ROS_DOMAIN_ID=1
+ros2 launch rover_simulation launch_nav.launch.py
+ros2 launch rover_simulation launch_sim.launch.py
 
+ROS_DOMAIN_ID=1
 ros2 launch orca_rtabmap orca_rtabmap_slam_rgbd.launch.py use_sim_time:=true qos:=2 localization:=true
 
+ROS_DOMAIN_ID=1
 ros2 launch orca_navigation navigation2.launch.py use_sim_time:=True
 
+ROS_DOMAIN_ID=1
 ros2 launch orca_free_fleet_client client.launch.xml
 # or
 # ros2 launch orca_free_fleet_client fake_client.launch.xml
 
-ros2 launch orca_free_fleet_server server.launch.xml map:=new_map
+ROS_DOMAIN_ID=0
+ros2 launch orca_free_fleet_server server.launch.xml map:=new_map5
 
+ROS_DOMAIN_ID=0
 ros2 launch task_publisher rasa_task_publisher.launch.py
 ```
 
@@ -122,64 +134,4 @@ Or, submit a task via CLI:
 ```bash
 ros2 run rmf_demos_tasks dispatch_patrol -p coe lounge -n 3 --use_sim_time
 ros2 run rmf_demos_tasks dispatch_delivery -p pantry -ph coke_dispenser -d hardware_2 -dh coke_ingestor --use_sim_time
-```
-
-TODO: 
-- fix bug! Remove python to use relativa path
-- Add point cloud concatenation
-- test open rmf task
-
-```bash
-
-vboxuser@Ubuntu22:~$ ~/orca_robot/colcon_ws/src/OrcaRL2/operation/shell_scripts/map_updater.sh new_map3
-ssh: connect to host 2620:9b::1912:a92 port 22: No route to host
-ssh: connect to host 2620:9b::1912:a92 port 22: No route to host
-[INFO] [launch]: All log files can be found below /home/vboxuser/.ros/log/2024-10-16-17-13-55-083182-Ubuntu22-57459
-[INFO] [launch]: Default logging verbosity is set to INFO
-[INFO] [map_saver_cli-1]: process started with pid [57464]
-[map_saver_cli-1] [INFO] [1729088035.310212974] [map_saver]: 
-[map_saver_cli-1] 	map_saver lifecycle node launched. 
-[map_saver_cli-1] 	Waiting on external lifecycle transitions to activate
-[map_saver_cli-1] 	See https://design.ros2.org/articles/node_lifecycle.html for more information.
-[map_saver_cli-1] [INFO] [1729088035.312214166] [map_saver]: Creating
-[map_saver_cli-1] [INFO] [1729088035.312259951] [map_saver]: Configuring
-[map_saver_cli-1] [INFO] [1729088035.319665767] [map_saver]: Saving map from '/map' topic to '/home/vboxuser/orca_robot/colcon_ws/src/OrcaRL2/navigation/orca_navigation/<launch.actions.declare_launch_argument.DeclareLaunchArgument object at 0x7f39658af910>/<launch.actions.declare_launch_argument.DeclareLaunchArgument object at 0x7f39658af910>.pgm' file
-[map_saver_cli-1] [WARN] [1729088035.319695913] [map_saver]: Free threshold unspecified. Setting it to default value: 0.250000
-[map_saver_cli-1] [WARN] [1729088035.319703598] [map_saver]: Occupied threshold unspecified. Setting it to default value: 0.650000
-[map_saver_cli-1] [ERROR] [1729088037.327274424] [map_saver]: Failed to spin map subscription
-[map_saver_cli-1] [INFO] [1729088037.328082919] [map_saver]: Destroying
-[ERROR] [map_saver_cli-1]: process has died [pid 57464, exit code 1, cmd '/opt/ros/humble/lib/nav2_map_server/map_saver_cli -f /home/vboxuser/orca_robot/colcon_ws/src/OrcaRL2/navigation/orca_navigation/<launch.actions.declare_launch_argument.DeclareLaunchArgument object at 0x7f39658af910>/<launch.actions.declare_launch_argument.DeclareLaunchArgument object at 0x7f39658af910>.pgm -t /map --ros-args -r __node:=map_saver'].
-[INFO] [pgm_to_png-2]: process started with pid [57482]
-[pgm_to_png-2] MAP NAME is new_map3
-[pgm_to_png-2] Traceback (most recent call last):
-[pgm_to_png-2]   File "/home/vboxuser/orca_robot/colcon_ws/src/OrcaRL2/navigation/orca_navigation/script/pgm2png.py", line 24, in <module>
-[pgm_to_png-2]     cv2.imwrite(output_path, input_img)
-[pgm_to_png-2] cv2.error: OpenCV(4.5.4) ./modules/imgcodecs/src/loadsave.cpp:799: error: (-215:Assertion failed) !_img.empty() in function 'imwrite'
-[pgm_to_png-2] 
-[ERROR] [pgm_to_png-2]: process has died [pid 57482, exit code 1, cmd 'python3 /home/vboxuser/orca_robot/colcon_ws/src/OrcaRL2/navigation/orca_navigation/script/pgm2png.py new_map3'].
-
-vboxuser@Ubuntu22:~$ ~/orca_robot/colcon_ws/src/OrcaRL2/operation/shell_scripts/map_updater.sh new_map3
-ssh: connect to host 2620:9b::1912:a92 port 22: No route to host
-ssh: connect to host 2620:9b::1912:a92 port 22: No route to host
-[INFO] [launch]: All log files can be found below /home/vboxuser/.ros/log/2024-10-16-17-14-53-460154-Ubuntu22-57728
-[INFO] [launch]: Default logging verbosity is set to INFO
-[INFO] [map_saver_cli-1]: process started with pid [57732]
-[map_saver_cli-1] [INFO] [1729088093.716607805] [map_saver]: 
-[map_saver_cli-1] 	map_saver lifecycle node launched. 
-[map_saver_cli-1] 	Waiting on external lifecycle transitions to activate
-[map_saver_cli-1] 	See https://design.ros2.org/articles/node_lifecycle.html for more information.
-[map_saver_cli-1] [INFO] [1729088093.720363126] [map_saver]: Creating
-[map_saver_cli-1] [INFO] [1729088093.723340639] [map_saver]: Configuring
-[map_saver_cli-1] [INFO] [1729088093.727971281] [map_saver]: Saving map from '/map' topic to '/home/vboxuser/orca_robot/colcon_ws/src/OrcaRL2/navigation/orca_navigation/<launch.actions.declare_launch_argument.DeclareLaunchArgument object at 0x72c87af1b910>/<launch.actions.declare_launch_argument.DeclareLaunchArgument object at 0x72c87af1b910>.pgm' file
-[map_saver_cli-1] [WARN] [1729088093.728011456] [map_saver]: Free threshold unspecified. Setting it to default value: 0.250000
-[map_saver_cli-1] [WARN] [1729088093.728021334] [map_saver]: Occupied threshold unspecified. Setting it to default value: 0.650000
-[map_saver_cli-1] [ERROR] [1729088095.737518742] [map_saver]: Failed to spin map subscription
-[map_saver_cli-1] [INFO] [1729088095.739816260] [map_saver]: Destroying
-[ERROR] [map_saver_cli-1]: process has died [pid 57732, exit code 1, cmd '/opt/ros/humble/lib/nav2_map_server/map_saver_cli -f /home/vboxuser/orca_robot/colcon_ws/src/OrcaRL2/navigation/orca_navigation/<launch.actions.declare_launch_argument.DeclareLaunchArgument object at 0x72c87af1b910>/<launch.actions.declare_launch_argument.DeclareLaunchArgument object at 0x72c87af1b910>.pgm -t /map --ros-args -r __node:=map_saver'].
-[INFO] [pgm_to_png-2]: process started with pid [57745]
-[pgm_to_png-2] MAP NAME is new_map3
-[pgm_to_png-2] Done!
-[INFO] [pgm_to_png-2]: process has finished cleanly [pid 57745]
-vboxuser@Ubuntu22:~$ ^C
-
 ```

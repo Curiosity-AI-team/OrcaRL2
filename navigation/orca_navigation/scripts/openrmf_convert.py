@@ -260,7 +260,39 @@ def read_yaml_scale(file_path):
         print(f"An error occurred: {e}")
         sys.exit()
 
+def modify_cmakelist(cmake_file_path, map_name):
 
+    lenght_map_indices = 0
+
+    # Open and read the contents of the file
+    with open(cmake_file_path, "r") as file:
+        cmake_content = file.readlines()
+
+    # Modify the "install(DIRECTORY ...)" command
+    for i, line in enumerate(cmake_content):
+        if "install(DIRECTORY" in line:
+            map_name_list = []
+            # Find the corresponding DESTINATION line and add the custom text
+            while "DESTINATION" not in cmake_content[i]:
+                map_name_list.append(cmake_content[i])
+                i += 1
+
+            lenght_map_indices = len([i for i, item in enumerate(map_name_list) if map_name in item])
+
+            if lenght_map_indices == 0:
+            # Add the custom text before the closing parenthesis
+                cmake_content[i] = "  " + map_name + "\n" + cmake_content[i]
+
+    if lenght_map_indices == 0:
+        # Write the modified content back to the file
+        with open(cmake_file_path, "w") as file:
+            file.writelines(cmake_content)
+
+        # Notify the user that the modification is complete
+        print(f"Added install command to {cmake_file_path}")
+    else:
+        print(f"No map added to {cmake_file_path}")
+        
 if __name__ == "__main__":
     if len(sys.argv) > 1:
         map_name = ' '.join(sys.argv[1:])
@@ -317,9 +349,12 @@ if __name__ == "__main__":
 
     print("Finish!")
     print("#"*80)
-    # output_yaml_path = f'/home/vboxuser/orca_robot/colcon_ws/src/OrcaRL2/simulation/rmf_demos/rmf_demos/config/{map_name}/robot_config.yaml'
-    output_yaml_path = os.path.join(script_dir, f'simulation/rmf_demos/rmf_demos/config/{map_name}/robot_config.yaml')
-    write_yaml(output_yaml_path, fleet_config)
+
+    for i, robot_name in enumerate(agent_names):
+        fleet_config['rmf_fleet']['name'] = robot_name        
+        # output_yaml_path = f'/home/vboxuser/orca_robot/colcon_ws/src/OrcaRL2/simulation/rmf_demos/rmf_demos/config/{map_name}/robot_config.yaml'
+        output_yaml_path = os.path.join(script_dir, f'simulation/rmf_demos/rmf_demos/config/{map_name}/robot_config{i}.yaml')
+        write_yaml(output_yaml_path, fleet_config)
 
     # output_json_path = f"/home/vboxuser/orca_robot/colcon_ws/src/OrcaRL2/simulation/rmf_demos/rmf_demos_dashboard_resources/{map_name}/dashboard_config.json"
     output_json_path = os.path.join(script_dir, f'simulation/rmf_demos/rmf_demos_dashboard_resources/{map_name}/dashboard_config.json')
@@ -327,3 +362,6 @@ if __name__ == "__main__":
 
     output_ros_tasks = os.path.join(script_dir, f'GENERATED_ROS_COMMANDS.md')
     write_ros_tasks(output_ros_tasks, json_config)
+
+    output_cmakelist = "/home/vboxuser/orca_robot/colcon_ws/src/OrcaRL2/simulation/rmf_demos/rmf_demos_dashboard_resources/CMakeLists.txt"
+    modify_cmakelist(output_cmakelist, map_name)

@@ -72,30 +72,5 @@ def generate_launch_description():
                 prefix = 'xterm -e',
             )
 
-            # Node(
-            #     package='tf2_ros',
-            #     executable='static_transform_publisher',
-            #     arguments=['0', '0', '0', '0', '0', '0', 'odom', 'base_footprint'],
-            #     parameters=[{'use_sim_time': True}]
-            # ),
-
-            # ERROR: executable 'fake_gps.py' not found on the libexec directory '/home/vboxuser/orca_robot/colcon_ws/install/simulation/lib/simulation'
-            # Node(
-            #     package='simulation',
-            #     executable='fake_gps.py',
-            #     name='fake_gps',
-            #     output='screen',
-            # ),
-            # IncludeLaunchDescription(
-            #     PythonLaunchDescriptionSource(
-            #         PathJoinSubstitution([FindPackageShare('aruco_detect'), 'launch', 'aruco_detect.launch.py'])
-            #     )),
-
-            # IncludeLaunchDescription(
-            #     PythonLaunchDescriptionSource(
-            #         PathJoinSubstitution([FindPackageShare('yolov8_bringup'), 'launch', 'yolov8_3d.launch.py'])
-            #     ),
-            #     launch_arguments={'model': 'yolov8m-pose.pt'}.items()
-            #     ),
         ]
     )

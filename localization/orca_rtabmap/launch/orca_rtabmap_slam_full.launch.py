@@ -32,11 +32,11 @@ def generate_launch_description():
     }
     
     rtabmap_remappings = [
-        ('scan_cloud', '/points2')
+        ('scan_cloud', '/points2_scan')
     ]
 
     icp_odom_remappings = [
-        ('scan_cloud', '/points2')
+        ('scan_cloud', '/points2_scan')
     ]
 
     # Parameters for icp_odometry node
@@ -91,7 +91,7 @@ def generate_launch_description():
                     }],
                     remappings=[
                         ('input', '/camera_depth/points'),
-                        ('output', '/points2'),
+                        ('output', '/points2_scan'),
                     ],
                 ),
             ],

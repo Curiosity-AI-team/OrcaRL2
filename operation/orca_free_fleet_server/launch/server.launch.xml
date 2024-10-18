@@ -5,7 +5,7 @@
   <arg name="use_sim_time" default="false"/>
   <arg name="map" default="office"/>
   <arg name="viz_config_file" default="$(find-pkg-share rmf_demos)/include/office/office.rviz"/>
-  <arg name="config_robot" default="robot_config"/>
+  <arg name="config_robot" default="robot_config0"/>
 
   <!-- Common launch -->
   <include file="$(find-pkg-share rmf_demos)/common.launch.xml">

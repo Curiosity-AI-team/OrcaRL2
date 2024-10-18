@@ -4,7 +4,7 @@ from ament_index_python.packages import get_package_share_directory
 
 
 from launch import LaunchDescription
-from launch.actions import IncludeLaunchDescription
+from launch.actions import IncludeLaunchDescription, SetEnvironmentVariable
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch_ros.actions import Node
 
@@ -17,6 +17,12 @@ def generate_launch_description():
     #         parameters=[{'use_sim_time': True}]
     # )
 
+    model_path = "/usr/share/gazebo-11/models:/home/vboxuser/orca_robot/colcon_ws/src/OrcaRL2/simulation/ros2_boldbot/boldbot_sim/models:/home/vboxuser/orca_robot/colcon_ws/install/boldbot_sim/share/boldbot_sim/..:/home/vboxuser/orca_robot/colcon_ws/install/boldbot_description/share/boldbot_description/.."
+
+    set_gazebo_model_path = SetEnvironmentVariable(
+        name='GAZEBO_MODEL_PATH',
+        value=model_path
+    )
 
     static_transform_publisher2 =  Node(
             package='tf2_ros',
@@ -51,10 +57,17 @@ def generate_launch_description():
             remappings=[('/cmd_vel_out','/cmd_vel_out')]
         )
 
+    custom_world = os.path.join(
+        get_package_share_directory('boldbot_sim'),
+        'worlds',
+        'navigation.world'  # Replace with your actual world file name
+    )
+
     # Include the Gazebo launch file, provided by the gazebo_ros package
     gazebo = IncludeLaunchDescription(
                 PythonLaunchDescriptionSource([os.path.join(get_package_share_directory('gazebo_ros'), 'launch', 'gazebo.launch.py')]),
                     launch_arguments={
+                        'world': custom_world,
                         'extra_gazebo_args': '--ros-args --params-file /home/vboxuser/orca_robot/colcon_ws/src/OrcaRL2/simulation/rover_simulation/config/gazebo_params.yaml'
                         }.items()
              )
@@ -73,6 +86,7 @@ def generate_launch_description():
 
     # Launch them all!
     return LaunchDescription([
+        set_gazebo_model_path,
         # static_transform_publisher1,
         static_transform_publisher2,
         nav,

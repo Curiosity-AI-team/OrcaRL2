@@ -149,4 +149,10 @@ ros2 run ff_examples_ros2 send_mode_request.py -f tinyRobot3 -r tinyRobot13 -m p
 ros2 run ff_examples_ros2 send_mode_request.py -f tinyRobot3 -r tinyRobot13 -m resume -i 4
 
 ros2 bag play rosbag2_2024_09_23-21_20_27/rosbag2_2024_09_23-21_20_27_0.db3
+
+
+ros2 launch rover_simulation launch_nav.launch.py
+
+ros2 launch orca_rtabmap orca_rtabmap_slam_scan.launch.py
+
 ``` 
